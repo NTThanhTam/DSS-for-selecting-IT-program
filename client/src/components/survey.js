@@ -119,7 +119,9 @@ const Survey = () => {
         try {
             await axios.post("http://localhost:5000/api/result", answerSet)
             .then(res => {
-                    navigate("/result", {state: {normalized: res.data.normalized.normalizedMatrix,
+                    navigate("/result", {state: {
+                        performace_score: res.data.performance_score.performance_score,
+                        normalized: res.data.normalized.normalizedMatrix,
                         weighted: res.data.weighted.weightedMatrix,
                         bestSimilarity: res.data.bestSimilarity.bestSimilarity,
                         ranks: res.data.ranks.ranks}})
@@ -140,7 +142,7 @@ const Survey = () => {
         if (question.question_id === 6){
             return (
                 <div key={question.question_id} className='p-3'>
-                    <label className='dark:text-white'>
+                    <label className='dark:text-white space-x-4'>
                             <p className='font-medium'>Do you have any experience in working, doing school's or personal's project?</p>
                             <span className='font-light px-1'><input type="radio" name="experience" value="yes" onChange={handleChange}/> Yes</span>
                             <span className='font-light px-1'><input type="radio" name="experience" value="no" onChange={handleChange} /> No</span>
@@ -193,12 +195,14 @@ const Survey = () => {
         <div className="md:h-screen m-0 dark:bg-gray-800">
             <NavBar />
 
-            <div className='flex flex-col bg-white dark:bg-gray-800 justify-center items-center'>
+            <div className='flex flex-col bg-white dark:bg-gray-800 justify-center items-center text-2xl'>
                 <div className="p-10">  
                     <div id="ie-check" className='' style={{ display: passIE ? 'none' : 'block'}}>
                         <p className='dark:text-white font-medium'>Have you passed IE?</p>
-                            <span className='dark:text-white font-light px-1'><input type="radio" name="ie" value="yes" onChange={() => {setPassIE(true)}}/> Yes</span>
-                            <span className='dark:text-white font-light px-1'><input type="radio" name="ie" value="no" onChange={() => {setPassIE(false)}}/> No</span>
+                        <div className="flex justify-center items-center space-x-4">
+                            <span className='dark:text-white font-light'><input type="radio" name="ie" value="yes" onChange={() => {setPassIE(true)}}/> Yes</span>
+                            <span className='dark:text-white font-light'><input type="radio" name="ie" value="no" onChange={() => {setPassIE(false)}}/> No</span>
+                        </div>
                     </div>
                     <div>
                         {/* <button onClick={() => navigate("/home")} style={{ display: passIE ? 'none' : 'block' }}>Return homepage</button> */}
@@ -209,8 +213,8 @@ const Survey = () => {
                                 <Questions key={q.question_id} question={q}/>
                             ))
                         }
-                        <div className="w-full">
-                            <input className="dark:text-white font-bold border rounded-md p-1 dark:bg-gray-900 hover:bg-gray-500 self-center" type="submit" value="Submit" />
+                        <div className="w-full flex justify-center items-center py-10">
+                            <input className="dark:text-white font-bold border rounded-md py-1 px-4 dark:bg-gray-900 hover:bg-gray-500 self-center cursor-pointer" type="submit" value="Submit" />
                         </div>
                     </form>
                 </div>

@@ -41,6 +41,9 @@ module.exports = {
       'Segoe UI Symbol', 
       'Noto Color Emoji'
         ]
+      },
+      backgroundImage: {
+        homepageBgr: "url('/public/homepage_backgroud.jpg')"
       }
     },
   },

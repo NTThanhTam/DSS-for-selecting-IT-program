@@ -5,8 +5,9 @@ import Users from "../components/users.js"
 
 
 const Home = () => {
-    const location = useLocation()
-    const {id, role} = location.state
+    // const location = useLocation()
+    // const {id, role} = location.state
+    const role = "student"
     return (
         <div>
             {role === "student" && <StudentHome />}

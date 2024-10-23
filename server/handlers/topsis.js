@@ -58,7 +58,6 @@ class Topsis {
                 bestSolution[j] = Math.max(bestSolution[j], weightedNormalized[i][j]);
             }
         }
-
         const worstDistance = new Array(row).fill(0);
         const bestDistance = new Array(row).fill(0);
 

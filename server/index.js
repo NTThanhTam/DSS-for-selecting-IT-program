@@ -2,8 +2,7 @@ import express from "express";
 import appRoute from "./routes/index.js";
 import {connectToDatabase} from "./DB/index.js";
 import cors from 'cors';
-import Topsis from './handlers/topsis.js';
-import Calculate from './handlers/resultHandler.js';
+
 
 
 

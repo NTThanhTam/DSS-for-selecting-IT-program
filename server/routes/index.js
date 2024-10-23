@@ -19,8 +19,8 @@ appRouter.get("/survey/:id", getQuestion);
 appRouter.get("/survey/:id/options", getAllOptions)
 appRouter.post("/result", (req, res) => {
         const answers = req.body;
-        const {normalizedMatrix, weightedMatrix, bestSimilarity, ranks} = Calculate(answers)
-        return res.status(201).json({normalized: {normalizedMatrix}, weighted: {weightedMatrix}, bestSimilarity: {bestSimilarity}, ranks: {ranks}})
+        const {performance_score, normalizedMatrix, weightedMatrix, bestSimilarity, ranks} = Calculate(answers)
+        return res.status(201).json({performance_score: {performance_score}, normalized: {normalizedMatrix}, weighted: {weightedMatrix}, bestSimilarity: {bestSimilarity}, ranks: {ranks}})
 })
 appRouter.get("/criteria", getAllCriteria);
 appRouter.get("/major", getAllMajor);

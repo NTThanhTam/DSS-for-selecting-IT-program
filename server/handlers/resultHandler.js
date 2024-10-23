@@ -55,7 +55,7 @@ export default function Calculate(answers) {
     var C7_english = Array(3).fill(0);
     var C8_gpa = Array(3).fill(0);
     var C9_softSkill = Array(3).fill(0);
-
+    console.log({C2_techSkill: {C2_techSkill}})
     //process ielts score input:
     if(ielts_score == 6.5){
         C7_english[0] = 2;
@@ -120,15 +120,16 @@ export default function Calculate(answers) {
         domains: new Set(["Cyber Security", "Machine Learning"])
     };
 
+    console.log(technologies)
+    console.log(domains)
+    console.log(programmingLanguages)
 
     // Loop through each major and check requirements
     for (const major of Object.keys(skillsRequirements)) {
-        const index = majors.indexOf(major);
-        
+        const index = majors.findIndex(m => m.major_code === major);
         const requiredProgrammingLanguages = skillsRequirements[major].programmingLanguages;
         const requiredTechnologies = skillsRequirements[major].technologies;
         const requiredDomains = skillsRequirements[major].domains;
-        
         if (programmingLanguages) {
             for (const language of programmingLanguages) {
                 if (requiredProgrammingLanguages.has(language)) {
@@ -149,11 +150,12 @@ export default function Calculate(answers) {
             for (const domain of domains) {
                 if (requiredDomains.has(domain)) {
                     C2_techSkill[index]++;
+                    console.log(index)
+
                 }
             }
         }
     }
-
     // Check if all skills are zero and set to 1 if true
     if (C2_techSkill[0] === 0 && C2_techSkill[1] === 0 && C2_techSkill[2] === 0) {
         C2_techSkill.fill(1);
@@ -187,5 +189,5 @@ export default function Calculate(answers) {
     // console.log('Best Similarity:', bestSimilarity);
     // console.log('Ranks:', ranks);    
 
-    return {normalizedMatrix, weightedMatrix, bestSimilarity, ranks};
+    return {performance_score, normalizedMatrix, weightedMatrix, bestSimilarity, ranks};
 }

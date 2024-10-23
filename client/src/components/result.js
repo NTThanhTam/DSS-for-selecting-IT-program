@@ -1,7 +1,9 @@
 import { useLocation } from 'react-router-dom';
 import { react, useEffect, useState } from 'react';
 import NavBar from "./navbar.js"
-
+import {FacultyPieChart,
+    FacultyBarChart} from "./visualization.js"
+import { useNavigate } from 'react-router-dom'
 
 function CriteriaTable({criteria}) {
     return(
@@ -23,7 +25,7 @@ function CriteriaTable({criteria}) {
                 <tr>
                     {
                         criteria.map((c, index) => (
-                            <td key = {index}>{c.criteria_text}</td>
+                            <td className="dark:text-white" key = {index}>{c.criteria_text}</td>
                         ))
                     }
                 </tr>
@@ -132,10 +134,10 @@ function BestSimilarityTable({bestSimilarity, majors}) {
 
 const Result = () => {
     const location = useLocation()      
-    const {normalized, weighted, bestSimilarity, ranks} = location.state
-
+    const {performace_score, normalized, weighted, bestSimilarity, ranks} = location.state
     const [majors, setMajors] = useState([]);
     const [criteria, setCriteria] = useState([]);
+    const navigate = useNavigate()
 
     useEffect(() => {
         const fetchMajors = async () => {
@@ -164,17 +166,30 @@ const Result = () => {
     }, [])
 
     return(
-        <div className="md:h-screen m-0 dark:bg-gray-800">
+        <div className=" m-0 dark:bg-gray-800">
             <NavBar />
             
-            {/* <CriteriaTable criteria={criteria}/>
+            {/* <CriteriaTable  criteria={criteria}/>
+            <NormalizedTable normalizedMatrix={performace_score} majors={majors}/>
             <NormalizedTable normalizedMatrix={normalized} majors={majors}/>
             <WeightedTable weightedMatrix={weighted} majors={majors}/>
-            <BestSimilarityTable bestSimilarity={bestSimilarity} majors={majors}/> */}
-            <div className="p-10">
-                <h2 align="center" className="dark:text-white font-bold md:text-xl">{majors[ranks.findIndex((rank) => rank === 1)]?.major_text}</h2>
-                <h3 align="center" className="dark:text-white font-light">is the best major for you!</h3>
+            <BestSimilarityTable bestSimilarity={bestSimilarity} majors={majors}/>  */}
+            <div className="h-lvh p-10 flex flex-col space-y-10 items-center">
+                <div className='p-20'>
+                    <h2 align="center" className="dark:text-white font-mono font-medium text-3xl max-w-4xl tracking-tight">{majors[ranks.findIndex((rank) => rank === 1)]?.major_text}</h2>
+                    <h3 align="center" className="dark:text-white font-light text-lg">is the best major for you!</h3>
+                </div>
+                <div className="flex flex-col md:h-screen bg-white dark:bg-gray-800 dark:text-white space-y-10 text-center">
+                    <div className='space-y-10'>
+                        <h3>Need More Information?</h3>
+                        <p className='mx-auto mt-6 max-w-2xl text-lg tracking-tight dark:text-gray-300'>If you have questions or need more details about the programs, feel free to explore our information page.</p>
+                        <button onClick={() => {navigate("/information")} } className="dark:text-white dark:bg-gray-900 font-light tracking-wide text-xl rounded-full px-5 py-3  hover:bg-gray-500" >More information</button>
+                    </div>
+                </div>
             </div>
+            {/* <FacultyPieChart />
+            <FacultyBarChart /> */}
+
         </div>
     )
 }
