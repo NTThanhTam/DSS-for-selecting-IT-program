@@ -2,10 +2,11 @@ import {findAllQuestions,
         findQuestion,
         findAllOptions,
         findOption,
-        getUserByUsername,
         getMajors,
         getCriteria,
-        findAllUsers
+        findAllUsers,
+        findResults,
+        deleteAResult
 } from "../DB/queries.js";
 
 export const getAllQuestions = async (req, res) => { 
@@ -51,27 +52,7 @@ export const getOption = async (req, res) => {
     }
 }
 
-export const login = async (req, res) => {
-    try {
-        const username = req.body.username;
-        const password = req.body.password;
-        const user = await getUserByUsername(username);
-        const user_id = user[0][0].user_id;
-        const user_role = user[0][0].role;
-        if (user.length > 0){
-            if (password == user[0][0].password) {
-                return res.json({Status: "Success", user_id: {user_id}, Role: {user_role}})
-            } else {
-                return res.json({Error: "Password not matched"})
-            }
-        } else {
-            return res.json({Error: "No username existed"})
-        }
-    } catch (error) {
-        console.log(error)
-        res.status(500).json({message: "Error occured"})
-    }
-};
+
 
 export const getAllMajor = async (req, res) => { 
     try {
@@ -119,4 +100,26 @@ export const getAllUsers = async (req, res) => {
         console.log(error)
         res.status(500).json({message: "Error occured"})
     }    
-    };
+};
+
+export const getResults = async (req, res) => { 
+    try {
+        const user_id = req.params.id;
+        const results = await findResults(user_id);
+        return res.status(200).json({results})
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({message: "Error occured"})
+    }    
+};
+
+export const deleteResult = async (req, res) => { 
+    try {
+        const result_id = req.params.id;
+        const results = await deleteAResult(result_id);
+        return res.status(200).json({results})
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({message: "Error occured"})
+    }    
+};

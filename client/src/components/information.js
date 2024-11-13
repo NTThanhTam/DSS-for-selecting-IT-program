@@ -105,7 +105,8 @@ const ProgramInformation = () => {
 
 
 const Information = () => {
-    const [checkedValue, setCheckedValue] = useState('')
+    const [checkedValue, setCheckedValue] = useState('programs')
+    const d = Date()
 
     const handleChange = (event) => {
         setCheckedValue(event.target.value)
@@ -113,11 +114,10 @@ const Information = () => {
 
     return (
         <div className='h-lvh flex flex-col m-0 dark:bg-gray-800'>
-            <NavBar />
-            <div className='flex-grow'>
+\            <div className='flex-grow'>
                 <ul className='flex p-20 space-x-10 items-center justify-center '>
                     <li className='transition ease-in-out hover:-translate-y-1 hover:scale-110 duration-200 '>
-                        <input type='radio' id='programs' name='information' value='programs' className='hidden peer ' onChange={handleChange}/>
+                        <input type='radio' id='programs' name='information' value='programs' className='hidden peer ' onChange={handleChange} checked={checkedValue === 'programs'}/>
                         <label htmlFor='programs' className='inline-flex items-center justify-between p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700'>                           
                             <div className='block'>
                                 <div className='w-full text-lg font-semibold '>Programs</div>

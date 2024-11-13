@@ -3,10 +3,6 @@ class Topsis {
         const row = performanceScore.length;
         const col = performanceScore[0].length;
 
-        // const criteria = ["C1", "C2", "C3", "C4", "C5", "C6",  "C7", "C8", "C9"];
-        // const majors = ["IT", "DS", "CS"];
-
-
         const sqrdSum = new Array(col).fill(0);
         const normalizedMatrix = Array.from({ length: row }, () => new Array(col).fill(0));
 
@@ -27,8 +23,8 @@ class Topsis {
         return normalizedMatrix;
     }
 
-    weightCal(normalizedMatrix) {
-        const weights = [0.2, 0.15, 0.15, 0.125, 0.125, 0.1, 0.05, 0.05, 0.05];
+    weightCal(normalizedMatrix, weights) {
+        // const weights = [0.2, 0.15, 0.15, 0.125, 0.125, 0.1, 0.05, 0.05, 0.05];
 
         const row = normalizedMatrix.length;
         const col = normalizedMatrix[0].length;

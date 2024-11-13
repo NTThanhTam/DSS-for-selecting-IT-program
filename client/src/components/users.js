@@ -11,7 +11,7 @@ const Users = () => {
 
         const getUsers = async () => {
             try {
-                const response = await axios.get("http://localhost:5000/api/users", {
+                const response = await axios.get("http://localhost:5000/api/app/users", {
                     signal: controller.signal
                 })
                 console.log(response.data)

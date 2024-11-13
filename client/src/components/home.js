@@ -1,16 +1,13 @@
-import { useLocation } from 'react-router-dom';
 import StudentHome from "../components/studentHome.jsx"
-import Users from "../components/users.js"
+import useAuth from '../hooks/useAuth'
 
 
 
 const Home = () => {
-    // const location = useLocation()
-    // const {id, role} = location.state
-    const role = "student"
+    const {user} = useAuth()
     return (
         <div>
-            {role === "student" && <StudentHome />}
+            {user?.user_role === "student" && <StudentHome />}
             {/* {role.find(role => role.name === "Customer") && <MenuCustomer />} */}
         </div>
     )

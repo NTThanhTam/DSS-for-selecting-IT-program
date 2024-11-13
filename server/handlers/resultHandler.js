@@ -1,5 +1,7 @@
 import Topsis from './topsis.js';
 import {fetchMajors, fetchCriteria} from './index.js';
+import {saveResult
+} from "../DB/queries.js";
 
 const getMajorsData  = async () => {
     try {
@@ -23,7 +25,9 @@ const majors = await getMajorsData()
 const criteria = await getCriteriasData()
 
 
-export default function Calculate(answers) {
+export async function skillCalculate(answerSet) {
+    const answers = answerSet.answers
+
     var ielts_score
     var gpa
     var soft_skill
@@ -55,7 +59,6 @@ export default function Calculate(answers) {
     var C7_english = Array(3).fill(0);
     var C8_gpa = Array(3).fill(0);
     var C9_softSkill = Array(3).fill(0);
-    console.log({C2_techSkill: {C2_techSkill}})
     //process ielts score input:
     if(ielts_score == 6.5){
         C7_english[0] = 2;
@@ -105,6 +108,13 @@ export default function Calculate(answers) {
         technologies: new Set(["React", "AWS", "Docker"]),
         domains: new Set(["Web Development", "Cloud Computing"])
     };
+    
+    // Initialize skillsRequirements for CS
+    skillsRequirements["CS"] = {
+        programmingLanguages: new Set(["Java", "Python"]),
+        technologies: new Set(["AWS", "Azure", "Kubernetes"]),
+        domains: new Set(["Cyber Security", "Machine Learning"])
+    };
 
     // Initialize skillsRequirements for DS
     skillsRequirements["DS"] = {
@@ -113,16 +123,11 @@ export default function Calculate(answers) {
         domains: new Set(["Data Science", "Machine Learning"])
     };
 
-    // Initialize skillsRequirements for CS
-    skillsRequirements["CS"] = {
-        programmingLanguages: new Set(["Java", "Python"]),
-        technologies: new Set(["AWS", "Azure", "Kubernetes"]),
-        domains: new Set(["Cyber Security", "Machine Learning"])
-    };
 
-    console.log(technologies)
-    console.log(domains)
-    console.log(programmingLanguages)
+
+    // console.log(technologies)
+    // console.log(domains)
+    // console.log(programmingLanguages)
 
     // Loop through each major and check requirements
     for (const major of Object.keys(skillsRequirements)) {
@@ -134,6 +139,7 @@ export default function Calculate(answers) {
             for (const language of programmingLanguages) {
                 if (requiredProgrammingLanguages.has(language)) {
                     C2_techSkill[index]++;
+                    console.log(language)
                 }
             }
         }
@@ -150,8 +156,6 @@ export default function Calculate(answers) {
             for (const domain of domains) {
                 if (requiredDomains.has(domain)) {
                     C2_techSkill[index]++;
-                    console.log(index)
-
                 }
             }
         }
@@ -181,13 +185,151 @@ export default function Calculate(answers) {
         }
     }
 
+    const weights = [0.2, 0.15, 0.15, 0.125, 0.125, 0.1, 0.05, 0.05, 0.05];
+
     const topsis = new Topsis();
     const normalizedMatrix = topsis.normalize(performance_score);
-    const weightedMatrix = topsis.weightCal(normalizedMatrix);
+    const weightedMatrix = topsis.weightCal(normalizedMatrix, weights);
     const bestSimilarity = topsis.idealSolution(weightedMatrix);
     const ranks = topsis.rank(bestSimilarity);
-    // console.log('Best Similarity:', bestSimilarity);
+
     // console.log('Ranks:', ranks);    
+
+    const rank_first = majors[ranks.indexOf(1)].major_code;  
+    const rank_second = majors[ranks.indexOf(2)].major_code; 
+    const rank_third = majors[ranks.indexOf(3)].major_code;  
+
+    try {
+        const user_id = answerSet.user_id
+        await saveResult(user_id, rank_first, rank_second, rank_third, 'Skill'); 
+    } catch (error) {
+        console.error("Error in skillCalculate():", error);
+    }
+
+    return {performance_score, normalizedMatrix, weightedMatrix, bestSimilarity, ranks};
+}
+
+export async function preferenceCalculate(answerSet) {
+    const answers = answerSet.answers
+
+    var interested = []
+    var quiteInterested = []
+    var notInterested = []
+
+    for (let answer of answers){
+        const key = Object.keys(answer)[0];
+        const value = answer[key];
+
+        if (value === 'interested'){
+            interested.push(key)
+            continue
+        }
+        else if (value === 'quite interested'){
+            quiteInterested.push(key)
+            continue
+        }
+        else{
+            notInterested.push(key)
+        }
+    }
+
+    console.log({'interested': interested})
+    console.log({'quiteInterested': quiteInterested})
+    console.log({'notInterested': notInterested})
+
+    var C1_interested = Array(3).fill(0);
+    var C2_quiteInterested = Array(3).fill(0);
+    var C3_notInterested = Array(3).fill(0);
+
+    const preferences = {
+        "IT": ["programming", "networkSystems", "cloudTechnologies", "realWorldApplications"],
+        "CS": ["programming", "softwareDevelopment", "ai", "collaborativeProjects"],
+        "DS": ["dataAnalysis", "dataVisualization", "databaseManagement", "ai"]
+    };
+
+    for (const major of Object.keys(preferences)) {
+        const index = majors.findIndex(m => m.major_code === major);
+        const preference = preferences[major];
+        if (interested) {
+            for (const element of interested) {
+                if (preference.includes(element)) {
+                    C1_interested[index]++;
+                }
+            }
+        }
+        if (quiteInterested) {
+            for (const element of quiteInterested) {
+                if (preference.includes(element)) {
+                    C2_quiteInterested[index]++;
+                }
+            }
+        }
+        if (notInterested) {
+            for (const element of notInterested) {
+                if (preference.includes(element)) {
+                    C3_notInterested[index]++;
+                }
+            }
+        }
+        
+    }
+    console.log({'C1_interested': C1_interested})
+    console.log({'C2_quiteInterested': C2_quiteInterested})
+    console.log({'C3_notInterested': C3_notInterested})
+
+    if (C1_interested.every(num => num === 0)) {
+        C1_interested.fill(1);
+    }
+    if (C2_quiteInterested.every(num => num === 0)) {
+        C2_quiteInterested.fill(1);
+    }
+    if (C3_notInterested.every(num => num === 0)) {
+        C3_notInterested.fill(1);
+    }
+
+    var performance_score_reverse = [];
+    var performance_score = Array.from({ length: majors.length }, () => new Array(3).fill(0));;
+
+    //Append performance score to a 2D matrix array
+    performance_score_reverse[0] = C1_interested;
+    performance_score_reverse[1] = C2_quiteInterested;
+    performance_score_reverse[2] = C3_notInterested;
+
+    for (let i = 0; i < majors.length; i++) {
+        for (let j = 0; j < 3; j++) {
+            performance_score[i][j] = performance_score_reverse[j][i];
+        }
+    }
+
+
+
+    const weights = [3, 2, 1];
+
+    const topsis = new Topsis();
+    const normalizedMatrix = topsis.normalize(performance_score);
+    const weightedMatrix = topsis.weightCal(normalizedMatrix, weights);
+    const bestSimilarity = topsis.idealSolution(weightedMatrix);
+    const ranks = topsis.rank(bestSimilarity);
+
+    console.log(performance_score)
+    console.log(bestSimilarity)
+    console.log(ranks)
+    console.log({majors: majors[ranks.indexOf(1)].major_code})
+
+    const rank_first = majors[ranks.indexOf(1)];  
+    const rank_second = majors[ranks.indexOf(2)]; 
+    const rank_third = majors[ranks.indexOf(3)];  
+    console.log(rank_first)
+    console.log(rank_second)
+    console.log(rank_third)
+
+    try {
+        const user_id = answerSet.user_id
+        await saveResult(user_id, rank_first.major_code, rank_second.major_code, rank_third.major_code, 'Preference'); 
+    } catch (error) {
+        console.error("Error in preferenceCalculate():", error);
+    }
+
 
     return {performance_score, normalizedMatrix, weightedMatrix, bestSimilarity, ranks};
 }

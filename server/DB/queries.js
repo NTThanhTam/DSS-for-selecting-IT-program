@@ -117,3 +117,63 @@ export const findAllUsers = async () => {
     }
     
 }
+
+export const saveResult = async (user_id, rank_first, rank_second, rank_third, survey_type) => {
+    const QUERY = "INSERT INTO Result (user_id, rank_first, rank_second, rank_third, survey_type) values (?, ?, ?, ?, ?)";
+    try {
+        const client = await pool.getConnection();
+        const result = await client.query(QUERY, [user_id, rank_first, rank_second, rank_third, survey_type]);
+        client.destroy();
+        return result[0];
+    } catch (error) {
+        console.log("Error in saveResult(): ");
+        console.log(error);
+        throw error;
+    }
+    
+}
+
+export const findResults = async (user_id) => {
+    const QUERY = "SELECT * FROM Result WHERE user_id = ?";
+    try {
+        const client = await pool.getConnection();
+        const result = await client.query(QUERY, [user_id]);
+        client.destroy();
+        return result[0];
+    } catch (error) {
+        console.log("Error in findResults(): ");
+        console.log(error);
+        throw error;
+    }
+    
+}
+
+export const deleteAResult = async (result_id) => {
+    const QUERY = "DELETE FROM Result WHERE result_id = ?";
+    try {
+        const client = await pool.getConnection();
+        const result = await client.query(QUERY, [result_id]);
+        client.destroy();
+        return result[0];
+    } catch (error) {
+        console.log("Error in deleteAResult(): ");
+        console.log(error);
+        throw error;
+    }
+    
+}
+
+export const saveUser = async (username, password, role) => {
+    const QUERY = "INSERT INTO User (username, password, role) values (?, ?, ?)";
+    try {
+        const client = await pool.getConnection();
+        const result = await client.query(QUERY, [username, password, role]);
+        client.destroy();
+        return result[0];
+    } catch (error) {
+        console.log("Error in saveUser(): ");
+        console.log(error);
+        throw error;
+    }
+    
+}

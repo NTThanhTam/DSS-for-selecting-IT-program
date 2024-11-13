@@ -43,7 +43,7 @@ module.exports = {
         ]
       },
       backgroundImage: {
-        homepageBgr: "url('/public/homepage_backgroud.jpg')"
+        homepageBgr: "url('/public/homepage_background.png')"
       }
     },
   },

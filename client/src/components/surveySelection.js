@@ -1,9 +1,10 @@
 import { react, useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios'
-import NavBar from "./navbar.js"
+import useAuth from '../hooks/useAuth.js'
 
-const Survey = () => {
+const SurveySelection = () => {
+    const {user} = useAuth()
 
     const [survey, setSurvey] = useState([]);
     const [QuestionSet, setQuestionSet] = useState([]); //Question + options
@@ -14,7 +15,7 @@ const Survey = () => {
     useEffect(() => {
         const fetchSurvey = async () => {
             try {
-                const res = await fetch("http://localhost:5000/api/survey")
+                const res = await fetch("http://localhost:5000/api/app/survey")
                 const data = await res.json();
                 // console.log(data.questions);
                 setSurvey(data.questions);
@@ -49,7 +50,7 @@ const Survey = () => {
 
     async function fetchOption(id) {
         try {
-            const res = await fetch("http://localhost:5000/api/survey/" + id +"/options")
+            const res = await fetch("http://localhost:5000/api/app/survey/" + id +"/options")
             const data = await res.json();
             return data.options;
         } catch (error) {
@@ -57,27 +58,29 @@ const Survey = () => {
         }
     }
 
-    var answerSet = []
-    answerSet.push(
-        {                    
-            question_id: "1",
-            option_id: "1",
-            option_text: "5.0",
-            checked: true
-        }, 
-        {                    
-            question_id: "2",
-            option_id: "10",
-            option_text: "<50",
-            checked: true
-        },
-        {                    
-            question_id: "3",
-            option_id: "14",
-            option_text: "1",
-            checked: true
-        }
-    )
+    var answerSet = {
+        user_id: user.user_id,
+        answers: [
+            {                    
+                question_id: "1",
+                option_id: "1",
+                option_text: "5.0",
+                checked: true
+            }, 
+            {                    
+                question_id: "2",
+                option_id: "10",
+                option_text: "<50",
+                checked: true
+            },
+            {                    
+                question_id: "3",
+                option_id: "14",
+                option_text: "1",
+                checked: true
+            }
+        ]
+    }
 
     const handleSurveyChange = (event) => {
         const { name, id, value, type, checked } = event.target;
@@ -91,9 +94,9 @@ const Survey = () => {
                     option_text: value,
                     checked: checked
                 }
-                answerSet.push(newAnswer);
+                answerSet.answers.push(newAnswer);
             } else {
-                answerSet = answerSet.filter(function( answer ) {
+                answerSet.answers = answerSet.answers.filter(function( answer ) {
                     return answer.option_id !== id;
                 });
             }
@@ -104,11 +107,11 @@ const Survey = () => {
                 option_text: event.target.options[event.target.selectedIndex].text,
                 checked: true
             }
-            if (answerSet.some(answer => answer.question_id === name)){
-                answerSet = answerSet.map(answer => answer.question_id === name? newAnswer : answer)
+            if (answerSet.answers.some(answer => answer.question_id === name)){
+                answerSet.answers = answerSet.answers.map(answer => answer.question_id === name? newAnswer : answer)
             }
             else {
-                answerSet.push(newAnswer);
+                answerSet.answers.push(newAnswer);
             }
         }
     }
@@ -117,7 +120,7 @@ const Survey = () => {
         event.preventDefault();
 
         try {
-            await axios.post("http://localhost:5000/api/result", answerSet)
+            await axios.post("http://localhost:5000/api/app/result/skills", answerSet)
             .then(res => {
                     navigate("/result", {state: {
                         performace_score: res.data.performance_score.performance_score,
@@ -192,12 +195,10 @@ const Survey = () => {
         }
 
     return(
-        <div className="md:h-screen m-0 dark:bg-gray-800">
-            <NavBar />
-
+        <div className=" m-0 dark:bg-gray-800">
             <div className='flex flex-col bg-white dark:bg-gray-800 justify-center items-center text-2xl'>
-                <div className="p-10">  
-                    <div id="ie-check" className='' style={{ display: passIE ? 'none' : 'block'}}>
+                <div className="p-20">  
+                    <div id="ie-check" className='h-screen' style={{ display: passIE ? 'none' : 'block'}}>
                         <p className='dark:text-white font-medium'>Have you passed IE?</p>
                         <div className="flex justify-center items-center space-x-4">
                             <span className='dark:text-white font-light'><input type="radio" name="ie" value="yes" onChange={() => {setPassIE(true)}}/> Yes</span>
@@ -223,4 +224,4 @@ const Survey = () => {
     )
 }
 
-export default Survey
+export default SurveySelection

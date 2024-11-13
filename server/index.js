@@ -1,10 +1,8 @@
 import express from "express";
 import appRoute from "./routes/index.js";
+import authRouter from './routes/auth.js'
 import {connectToDatabase} from "./DB/index.js";
 import cors from 'cors';
-
-
-
 
 
 const app = express();
@@ -24,5 +22,7 @@ connectToDatabase()
     })
 
 app.use(express.json());
-app.use("/api", appRoute); //http://localhost:5000/api/food
+app.use("/api/app", appRoute); //http://localhost:5000/api/app
+app.use("/api/auth", authRouter); 
+
 
