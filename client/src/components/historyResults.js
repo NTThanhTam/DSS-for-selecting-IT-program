@@ -33,15 +33,15 @@ const HistoryResults = () => {
     }
     console.log(results)
     return (
-        <div>
+        <div className='h-lvh'>
             {!results.length && 
-            <div className="h-lvh mt-10 p-20 flex flex-col justify-content items-center dark:bg-gray-800 ">
+            <div className="h-lvh m-auto flex flex-col justify-center items-center dark:bg-gray-800 ">
                 <p className='text-2xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white'>It seems empty here.</p>
                 <p className='text-xl leading-tight tracking-tight text-gray-900 dark:text-white'>Let's go make some <a href="/survey" className="font-medium text-primary-600 hover:underline dark:text-primary-500">surveys</a></p>
 
             </div>
             }
-            {results && 
+            {results.length && 
                 <section className="h-lvh bg-white py-8 dark:bg-gray-800 md:py-16">
                     <div className="mx-auto max-w-screen-xl px-4 2xl:px-0">
                         <div className="mx-auto max-w-5xl">
