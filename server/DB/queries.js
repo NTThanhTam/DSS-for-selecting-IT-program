@@ -75,15 +75,15 @@ export const getUserByUsername = async (username) => {
     }
 }
 
-export const getMajors = async () => {
-    const QUERY = 'SELECT * from Major';
+export const getPrograms = async () => {
+    const QUERY = 'SELECT * from Program';
     try {
         const client = await pool.getConnection();
         const result = await client.query(QUERY);
         client.destroy();
         return result;
     } catch (error) {
-        console.log("Error in getMajors(): ");
+        console.log("Error in getPrograms(): ");
         console.log(error);
         throw error;
     }
@@ -118,15 +118,45 @@ export const findAllUsers = async () => {
     
 }
 
-export const saveResult = async (user_id, rank_first, rank_second, rank_third, survey_type) => {
-    const QUERY = "INSERT INTO Result (user_id, rank_first, rank_second, rank_third, survey_type) values (?, ?, ?, ?, ?)";
+export const saveResult = async (user_id, rank_first, rank_second, rank_third) => {
+    const QUERY = "INSERT INTO Result (user_id, rank_first, rank_second, rank_third) values (?, ?, ?, ?)";
     try {
         const client = await pool.getConnection();
-        const result = await client.query(QUERY, [user_id, rank_first, rank_second, rank_third, survey_type]);
+        const result = await client.query(QUERY, [user_id, rank_first, rank_second, rank_third]);
         client.destroy();
         return result[0];
     } catch (error) {
         console.log("Error in saveResult(): ");
+        console.log(error);
+        throw error;
+    }
+    
+}
+
+export const updateResultFeedback = async (result_id, feedback) => {
+    const QUERY = "UPDATE Result SET feedback = ? WHERE result_id = ?";
+    try {
+        const client = await pool.getConnection();
+        const result = await client.query(QUERY, [feedback, result_id]);
+        client.destroy();
+        return result[0];
+    } catch (error) {
+        console.log("Error in updateResultFeedback(): ");
+        console.log(error);
+        throw error;
+    }
+    
+}
+
+export const getResult = async (result_id) => {
+    const QUERY = "SELECT * FROM Result WHERE result_id = ?";
+    try {
+        const client = await pool.getConnection();
+        const result = await client.query(QUERY, [result_id]);
+        client.destroy();
+        return result[0];
+    } catch (error) {
+        console.log("Error in getResult(): ");
         console.log(error);
         throw error;
     }

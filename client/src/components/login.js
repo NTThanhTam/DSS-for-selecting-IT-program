@@ -26,7 +26,7 @@ const Login = () => {
                 localStorage.clear();
 
                 if (data.Status === "Success") {
-                    navigate("/home")
+                    navigate("/")
                 }
                 else {
                     setMessage(data.Error)

@@ -113,7 +113,7 @@ const Information = () => {
     }
 
     return (
-        <div className='h-lvh flex flex-col m-0 dark:bg-gray-800'>
+        <div className='h-max flex flex-col pt-10 m-0 dark:bg-gray-800'>
             <div className='flex-grow'>
                 <ul className='flex p-20 space-x-10 items-center justify-center '>
                     <li className='transition ease-in-out hover:-translate-y-1 hover:scale-110 duration-200 '>

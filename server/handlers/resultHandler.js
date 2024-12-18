@@ -1,14 +1,14 @@
 import Topsis from './topsis.js';
-import {fetchMajors, fetchCriteria} from './index.js';
+import {fetchPrograms, fetchCriteria} from './index.js';
 import {saveResult
 } from "../DB/queries.js";
 
-const getMajorsData  = async () => {
+const getProgramsData  = async () => {
     try {
-        const majors = await fetchMajors(); 
-        return majors[0]; 
+        const programs = await fetchPrograms(); 
+        return programs[0]; 
     } catch (error) {
-        console.error("Error in getMajorsData():", error);
+        console.error("Error in getProgramsData():", error);
     }
 }
 
@@ -21,193 +21,9 @@ const getCriteriasData  = async () => {
     }
 }
 
-const majors = await getMajorsData()
+const programs = await getProgramsData()
 const criteria = await getCriteriasData()
 
-
-export async function skillCalculate(answerSet) {
-    const answers = answerSet.answers
-
-    var ielts_score
-    var gpa
-    var soft_skill
-    var programmingLanguages = []
-    var technologies = []
-    var domains = []
-
-    ielts_score = parseFloat(answers.find(a => a.question_id === "1").option_text)
-    gpa = answers.find(a => a.question_id === "2").option_text
-    soft_skill = parseFloat(answers.find(a => a.question_id === "3").option_text)
-
-    for (let a of answers){
-        if(a.question_id === "4"){
-            programmingLanguages.push(a.option_text)
-        } else if(a.question_id === "5"){
-            technologies.push(a.option_text)
-        } else if(a.question_id === "6"){
-            domains.push(a.option_text)
-        }
-    }
-
-
-    var C1_careerProspect = [0.6, 0.7, 0.6];
-    var C2_techSkill = Array(3).fill(0);
-    var C3_studentRate = [0.5, 0.3, 0.2];
-    var C4_gradRate = [0.4, 0.5, 0.4];
-    var C5_changeMajorRate = [0.4, 0.4, 0.3];
-    var C6_labResourse = [4, 4, 2];
-    var C7_english = Array(3).fill(0);
-    var C8_gpa = Array(3).fill(0);
-    var C9_softSkill = Array(3).fill(0);
-    //process ielts score input:
-    if(ielts_score == 6.5){
-        C7_english[0] = 2;
-        C7_english[1] = 1;
-        C7_english[2] = 2;
-    } else if (ielts_score <= 6.0){
-        C7_english[0] = 2;
-        C7_english[1] = 1;
-        C7_english[2] = 1;
-    } else if (ielts_score >= 7.0){
-        C7_english[0] = 1;
-        C7_english[1] = 2;
-        C7_english[2] = 1;
-    }
-    
-    //process GPA input:
-    if(gpa === "<50" && gpa === "50-70" && gpa === "71-80"){
-        C8_gpa[0] = 2;
-        C8_gpa[1] = 1;
-        C8_gpa[2] = 1;
-    } else{
-        C8_gpa[0] = 1;
-        C8_gpa[1] = 2;
-        C8_gpa[2] = 2;
-    }  
-
-    //process soft skill score input:
-    if(soft_skill >= 9){
-        C9_softSkill[0] = 1;
-        C9_softSkill[1] = 2;
-        C9_softSkill[2] = 1;
-    } else if (soft_skill == 8){
-        C9_softSkill[0] = 1;
-        C9_softSkill[1] = 1;
-        C9_softSkill[2] = 2;
-    } else if (soft_skill <= 7){
-        C9_softSkill[0] = 2;
-        C9_softSkill[1] = 1;
-        C9_softSkill[2] = 1;
-    }
-
-    const skillsRequirements = {};
-
-    // Initialize skillsRequirements for IT
-    skillsRequirements["IT"] = {
-        programmingLanguages: new Set(["JavaScript", "Python", "C#"]),
-        technologies: new Set(["React", "AWS", "Docker"]),
-        domains: new Set(["Web Development", "Cloud Computing"])
-    };
-    
-    // Initialize skillsRequirements for CS
-    skillsRequirements["CS"] = {
-        programmingLanguages: new Set(["Java", "Python"]),
-        technologies: new Set(["AWS", "Azure", "Kubernetes"]),
-        domains: new Set(["Cyber Security", "Machine Learning"])
-    };
-
-    // Initialize skillsRequirements for DS
-    skillsRequirements["DS"] = {
-        programmingLanguages: new Set(["Python", "R", "SQL"]),
-        technologies: new Set(["Azure", "AWS", "Docker"]),
-        domains: new Set(["Data Science", "Machine Learning"])
-    };
-
-
-
-    // console.log(technologies)
-    // console.log(domains)
-    // console.log(programmingLanguages)
-
-    // Loop through each major and check requirements
-    for (const major of Object.keys(skillsRequirements)) {
-        const index = majors.findIndex(m => m.major_code === major);
-        const requiredProgrammingLanguages = skillsRequirements[major].programmingLanguages;
-        const requiredTechnologies = skillsRequirements[major].technologies;
-        const requiredDomains = skillsRequirements[major].domains;
-        if (programmingLanguages) {
-            for (const language of programmingLanguages) {
-                if (requiredProgrammingLanguages.has(language)) {
-                    C2_techSkill[index]++;
-                    console.log(language)
-                }
-            }
-        }
-        
-        if (technologies) {
-            for (const technology of technologies) {
-                if (requiredTechnologies.has(technology)) {
-                    C2_techSkill[index]++;
-                }
-            }
-        }
-        
-        if (domains) {
-            for (const domain of domains) {
-                if (requiredDomains.has(domain)) {
-                    C2_techSkill[index]++;
-                }
-            }
-        }
-    }
-    // Check if all skills are zero and set to 1 if true
-    if (C2_techSkill[0] === 0 && C2_techSkill[1] === 0 && C2_techSkill[2] === 0) {
-        C2_techSkill.fill(1);
-    }
-
-    var performance_score_reverse = [];
-    var performance_score = Array.from({ length: majors.length }, () => new Array(criteria.length).fill(0));;
-
-    //Append performance score to a 2D matrix array
-    performance_score_reverse[0] = C1_careerProspect;
-    performance_score_reverse[1] = C2_techSkill;
-    performance_score_reverse[2] = C3_studentRate;
-    performance_score_reverse[3] = C4_gradRate;
-    performance_score_reverse[4] = C5_changeMajorRate;
-    performance_score_reverse[5] = C6_labResourse;
-    performance_score_reverse[6] = C7_english;
-    performance_score_reverse[7] = C8_gpa;
-    performance_score_reverse[8] = C9_softSkill;
-
-    for (let i = 0; i < majors.length; i++) {
-        for (let j = 0; j < criteria.length; j++) {
-            performance_score[i][j] = performance_score_reverse[j][i];
-        }
-    }
-
-    const weights = [0.2, 0.15, 0.15, 0.125, 0.125, 0.1, 0.05, 0.05, 0.05];
-
-    const topsis = new Topsis();
-    const normalizedMatrix = topsis.normalize(performance_score);
-    const weightedMatrix = topsis.weightCal(normalizedMatrix, weights);
-    const bestSimilarity = topsis.idealSolution(weightedMatrix);
-    const ranks = topsis.rank(bestSimilarity);
-
-    // console.log('Ranks:', ranks);    
-
-    const rank_first = majors[ranks.indexOf(1)].major_code;  
-    const rank_second = majors[ranks.indexOf(2)].major_code; 
-    const rank_third = majors[ranks.indexOf(3)].major_code;  
-
-    try {
-        const user_id = answerSet.user_id
-        await saveResult(user_id, rank_first, rank_second, rank_third, 'Skill'); 
-    } catch (error) {
-        console.error("Error in skillCalculate():", error);
-    }
-
-    return {performance_score, normalizedMatrix, weightedMatrix, bestSimilarity, ranks};
-}
 
 export async function preferenceCalculate(answerSet) {
     const answers = answerSet.answers
@@ -222,7 +38,7 @@ export async function preferenceCalculate(answerSet) {
 
     // console.log({english})
     // console.log({softSkills})
-    console.log({interestedSubjects})
+    // console.log({interestedSubjects})
 
     for (var key in answers){
         const value = answers[key];
@@ -239,7 +55,7 @@ export async function preferenceCalculate(answerSet) {
         }
     }
 
-    console.log(majors)
+    // console.log(programs)
 
     // console.log({'interested': interested})
     // console.log({'quiteInterested': quiteInterested})
@@ -339,9 +155,9 @@ export async function preferenceCalculate(answerSet) {
         C7_programmingLanguages[2] += influence.DS;
     });
 
-    for (const major of Object.keys(preferences)) {
-        const index = majors.findIndex(m => m.major_code === major);
-        const preference = preferences[major];
+    for (const program of Object.keys(preferences)) {
+        const index = programs.findIndex(m => m.program_code === program);
+        const preference = preferences[program];
         if (interested) {
             for (const element of interested) {
                 if (preference.includes(element)) {
@@ -392,7 +208,7 @@ export async function preferenceCalculate(answerSet) {
     const weights = [3, 2, 1, 1, 2.5, 2, 2.5]; //[C1, C2, C3, C4, C5, C6, C7]
 
     var performance_score_reverse = [];
-    var performance_score = Array.from({ length: majors.length }, () => new Array(weights.length).fill(0));;
+    var performance_score = Array.from({ length: programs.length }, () => new Array(weights.length).fill(0));;
 
     //Append performance score to a 2D matrix array
     performance_score_reverse[0] = C1_interested;
@@ -403,7 +219,7 @@ export async function preferenceCalculate(answerSet) {
     performance_score_reverse[5] = C6_interestedSubjects;
     performance_score_reverse[6] = C7_programmingLanguages;
 
-    for (let i = 0; i < majors.length; i++) {
+    for (let i = 0; i < programs.length; i++) {
         for (let j = 0; j < weights.length; j++) {
             performance_score[i][j] = performance_score_reverse[j][i];
         }
@@ -422,17 +238,18 @@ export async function preferenceCalculate(answerSet) {
     console.log(bestSimilarity)
     console.log(ranks)
 
-    const rank_first = majors[ranks.indexOf(1)];  
-    const rank_second = majors[ranks.indexOf(2)]; 
-    const rank_third = majors[ranks.indexOf(3)];  
+    const rank_first = programs[ranks.indexOf(1)];  
+    const rank_second = programs[ranks.indexOf(2)]; 
+    const rank_third = programs[ranks.indexOf(3)];  
+    let result = null
+    try {
+        const user_id = answerSet.user_id
+        result  = await saveResult(user_id, rank_first.program_code, rank_second.program_code, rank_third.program_code); 
+    } catch (error) {
+        console.error("Error in preferenceCalculate():", error);
+    }
 
-    // try {
-    //     const user_id = answerSet.user_id
-    //     await saveResult(user_id, rank_first.major_code, rank_second.major_code, rank_third.major_code, 'Preference'); 
-    // } catch (error) {
-    //     console.error("Error in preferenceCalculate():", error);
-    // }
-
-
-    return {performance_score, normalizedMatrix, weightedMatrix, bestSimilarity, ranks};
+    // console.log({'HEREEEE: ': result})
+    return {result}
+    // return {performance_score, normalizedMatrix, weightedMatrix, bestSimilarity, ranks};
 }

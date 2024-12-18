@@ -2,6 +2,7 @@ import { react, useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios'
 import useAuth from '../hooks/useAuth.js'
+import { useId } from "react";
 
 function Input ({value, group, responses, handleChangeSubject}) {
     const subjectData = responses.answers[group].find(s => s.subject === value);
@@ -22,10 +23,12 @@ function Input ({value, group, responses, handleChangeSubject}) {
 }
 
 function Radio({value, group, handleRadio, responses}){
+    const id = useId();
+
     return(
         <div class="flex items-center mb-4">
             <input 
-                id={value} 
+                id={id} 
                 type="radio" 
                 value={value} 
                 name={group} 
@@ -34,7 +37,7 @@ function Radio({value, group, handleRadio, responses}){
                 className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" 
             />
             <label 
-                htmlFor={value} 
+                htmlFor={id} 
                 className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">
                     {String(value).charAt(0).toUpperCase() + String(value).slice(1)}
             </label>
@@ -167,12 +170,15 @@ export default function SurveyPreference() {
         try {
             await axios.post("http://localhost:5000/api/app/result/preferences", responses)
             .then(res => {
+                console.log( res.data.result.insertId)
                     navigate("/result", {state: {
-                        performace_score: res.data.performance_score.performance_score,
-                        normalized: res.data.normalized.normalizedMatrix,
-                        weighted: res.data.weighted.weightedMatrix,
-                        bestSimilarity: res.data.bestSimilarity.bestSimilarity,
-                        ranks: res.data.ranks.ranks}})
+                        id: res.data.result.insertId}})
+                    // navigate("/result", {state: {
+                    //     performace_score: res.data.performance_score.performance_score,
+                    //     normalized: res.data.normalized.normalizedMatrix,
+                    //     weighted: res.data.weighted.weightedMatrix,
+                    //     bestSimilarity: res.data.bestSimilarity.bestSimilarity,
+                    //     ranks: res.data.ranks.ranks}})
             })
             .then(err => console.log(err))
         } catch (error) {

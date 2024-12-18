@@ -1,5 +1,3 @@
-import SurveySelection from '../components/surveySelection'
-import SurveyFill_in from '../components/surveyFill_in'
 import SurveyPreference from '../components/surveyPreference'
 
 import { react, useEffect, useState } from 'react';
@@ -27,7 +25,7 @@ const SurveyPage = () => {
                                 </p>
                             </div>
                             <div className="flex items-center justify-center">
-                                <button onClick={(e) => setSurvey(true)} className="w-1/3 bg-purple-700 dark:text-white font-semiBold tracking-wide text-xl rounded-full px-5 py-3 hover:bg-gradient-to-r from-purple-500 to-purple-700" >Start</button>
+                                <button onClick={(e) => setSurvey(true)} className=" text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-lg px-20 py-3 text-center me-2 mb-2" >Start</button>
                             </div>
                         </div>
                     </div>

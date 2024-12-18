@@ -2,11 +2,13 @@ import {findAllQuestions,
         findQuestion,
         findAllOptions,
         findOption,
-        getMajors,
+        getPrograms,
         getCriteria,
         findAllUsers,
         findResults,
-        deleteAResult
+        deleteAResult,
+        getResult,
+        updateResultFeedback
 } from "../DB/queries.js";
 
 export const getAllQuestions = async (req, res) => { 
@@ -54,22 +56,22 @@ export const getOption = async (req, res) => {
 
 
 
-export const getAllMajor = async (req, res) => { 
+export const getAllPrograms = async (req, res) => { 
     try {
-        const majors = await getMajors();
-        return res.status(200).json({majors})
+        const programs = await getPrograms();
+        return res.status(200).json({programs})
     } catch (error) {
         console.log(error)
         res.status(500).json({message: "Error occured"})
     }    
 };
 
-export const fetchMajors = async () => {
+export const fetchPrograms = async () => {
     try {
-        return await getMajors(); 
+        return await getPrograms(); 
     } catch (error) {
-        console.error("Error in fetchMajors():", error);
-        throw new Error("Error occurred while fetching majors");
+        console.error("Error in fetchPrograms():", error);
+        throw new Error("Error occurred while fetching programs");
     }
 };
 
@@ -107,6 +109,29 @@ export const getResults = async (req, res) => {
         const user_id = req.params.id;
         const results = await findResults(user_id);
         return res.status(200).json({results})
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({message: "Error occured"})
+    }    
+};
+
+export const getOneResult = async (req, res) => { 
+    try {
+        const result_id = req.params.id;
+        const result = await getResult(result_id);
+        return res.status(200).json({result})
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({message: "Error occured"})
+    }    
+};
+
+export const updateFeedback = async (req, res) => { 
+    try {
+        const result_id = req.params.id
+        const {feedback} = req.body;
+        const result = await updateResultFeedback(result_id, feedback);
+        return res.status(200).json({result})
     } catch (error) {
         console.log(error)
         res.status(500).json({message: "Error occured"})

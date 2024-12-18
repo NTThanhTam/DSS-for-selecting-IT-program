@@ -7,7 +7,7 @@ const NavBar = () => {
 
     const handleLogout = () => {
         sessionStorage.removeItem('user', null);
-        navigate('/');
+        navigate('/login');
     };
 
     return (
@@ -21,7 +21,7 @@ const NavBar = () => {
             {/* Navigation Links */}
             <div className="hidden md:flex space-x-6">
                 <a
-                    href="/home"
+                    href="/"
                     className="text-white hover:text-gray-200 transition-colors duration-300"
                 >
                     Home
@@ -32,35 +32,46 @@ const NavBar = () => {
                 >
                     Information
                 </a>
-                <a
-                    href="/survey"
-                    className="text-white hover:text-gray-200 transition-colors duration-300"
-                >
-                    Take Survey
-                </a>
-                <a
-                    href="/history"
-                    className="text-white hover:text-gray-200 transition-colors duration-300"
-                >
-                    History Results
-                </a>
-                <a
+                {user && (
+                    <div className="hidden md:flex space-x-6">
+                        <a
+                            href="/survey"
+                            className="text-white hover:text-gray-200 transition-colors duration-300"
+                        >
+                        Take Survey
+                        </a>
+                        <a
+                            href="/history"
+                            className="text-white hover:text-gray-200 transition-colors duration-300"
+                        >
+                            History Results
+                        </a>
+                    </div>
+                )}
+                {/* <a
                     href="/contact"
                     className="text-white hover:text-gray-200 transition-colors duration-300"
                 >
                     Contact
-                </a>
+                </a> */}
             </div>
     
             {/* Logout Button */}
             <div className="space-x-4">
-                {user && (
+                {user ? (
                     <button
                         onClick={handleLogout}
                         className="text-white border border-purple-500 rounded-lg hover:bg-purple-500 px-4 py-1 rounded-lg transition-colors duration-300"
                     >
-                        Logout
+                        Log out
                     </button>
+                ) : (
+                    <a
+                        href="/login"
+                        className="text-white border border-purple-500 rounded-lg hover:bg-purple-500 px-4 py-1 rounded-lg transition-colors duration-300"
+                    >
+                        Sign in
+                    </a>
                 )}
             </div>
         </div>
