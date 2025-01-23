@@ -9,11 +9,11 @@ function Input ({value, group, responses, handleChangeSubject}) {
 
     return (
         <label className="inline-flex items-center space-x-5" key={value}>
-            <span className="ml-2 text-gray-300">GPA: </span>
+            <span className="ml-2 dark:text-gray-300">GPA: </span>
             <input
                 type="text"
                 id={value}
-                className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/3 p-2 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                className='bg-gray-50 border border-gray-500 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/3 p-2 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
                 value={subjectData.gpa}
                 onChange={(e) => handleChangeSubject(value, e.target.value, 'gpa')}
                 required
@@ -57,7 +57,7 @@ function Subject ({value, group, responses, handleChangeSubject}) {
                     checked = {responses.answers[group].some(s => s.subject === value)}
                     onChange={(e) => handleChangeSubject(e.target.value, null,'subject')}
                 />
-                <label htmlFor={value} className="ml-2 text-gray-300">{value}</label>                
+                <label htmlFor={value} className="ml-2 dark:text-gray-300">{value}</label>                
             {responses.answers[group].some(s => s.subject === value) &&
             <Input value={value} group={group} responses={responses} handleChangeSubject={handleChangeSubject}/>
             }
@@ -196,7 +196,7 @@ export default function SurveyPreference() {
                     checked = {responses.answers[group].includes(value)}
                     onChange={(e) => handleChangeCheckbox(group, e.target.value)}
                 />
-                <span className="ml-2 text-gray-300">{value}</span>
+                <span className="ml-2 dark:text-gray-300">{value}</span>
             </label>
         )
     }
@@ -210,7 +210,7 @@ export default function SurveyPreference() {
         <div className='h-full py-5'>
 
             <form className="max-w-2xl mx-auto space-y-20" onSubmit={handleSubmit}>
-                <div className="mb-5 dark:bg-gray-700 py-10 px-5 rounded-lg">
+                <div className="mb-5 bg-purple-100 shadow-lg dark:bg-gray-700 py-10 px-5 rounded-lg">
                     <label className="block mb-2 text-lg font-medium text-gray-900 dark:text-white space-y-2">
                         <span>What is your English proficiency level?</span>
                         <Radio value='beginner' group='englishProficiency' handleRadio={handleRadio} responses={responses} />
@@ -219,7 +219,7 @@ export default function SurveyPreference() {
                     </label>
                 </div>
     
-                <div className="mb-5 dark:bg-gray-700 py-10 px-5 rounded-lg">
+                <div className="mb-5 bg-purple-100 shadow-lg dark:bg-gray-700 py-10 px-5 rounded-lg">
                     <div className="block mb-2 text-lg font-medium text-gray-900 dark:text-white">
                         What soft skills do you possess? (Select all that apply)
                         <div className="flex flex-col">
@@ -235,7 +235,7 @@ export default function SurveyPreference() {
                     </div>
                 </div>
     
-                <div className="mb-5 dark:bg-gray-700 py-10 px-5 rounded-lg">
+                <div className="mb-5 bg-purple-100 shadow-lg dark:bg-gray-700 py-10 px-5 rounded-lg">
                     <div className="block mb-2 text-lg font-medium text-gray-900 dark:text-white">
                         Which subjects are you most interested in? (Select all that apply)
                         <div className="flex flex-col">
@@ -253,7 +253,7 @@ export default function SurveyPreference() {
                     </div>
                 </div>
     
-                <div className="mb-5 dark:bg-gray-700 py-10 px-5 rounded-lg">
+                <div className="mb-5 bg-purple-100 shadow-lg dark:bg-gray-700 py-10 px-5 rounded-lg">
                     <label className="mb-2 text-lg font-medium text-gray-900 dark:text-white space-y-2">
                         <span>How interested are you in learning various programming languages (e.g., Python, Java, C++)?</span>
                         <Radio value='not interested' group='programming' handleRadio={handleRadio} responses={responses} />
@@ -262,7 +262,7 @@ export default function SurveyPreference() {
                     </label>
                 </div>
                 
-                <div className="mb-5 dark:bg-gray-700 py-10 px-5 rounded-lg">
+                <div className="mb-5 bg-purple-100 shadow-lg dark:bg-gray-700 py-10 px-5 rounded-lg">
 
                     <label className="block mb-2 text-lg font-medium text-gray-900 dark:text-white space-y-2">
                         <span>Which programming languages have you learned or are interested in learning? <span className='dark:text-gray-400'>(comma-seperated, required)</span></span>
@@ -277,7 +277,7 @@ export default function SurveyPreference() {
                     </label>
                 </div>
 
-                <div className="mb-5 dark:bg-gray-700 py-10 px-5 rounded-lg">
+                <div className="mb-5 bg-purple-100 shadow-lg dark:bg-gray-700 py-10 px-5 rounded-lg">
                     <label className="block mb-2 text-lg font-medium text-gray-900 dark:text-white space-y-2">
                         <span>How interested are you in working with data analysis and statistical methods?</span>
                         <Radio value='not interested' group='dataAnalysis' handleRadio={handleRadio} responses={responses} />
@@ -286,7 +286,7 @@ export default function SurveyPreference() {
                     </label>
                 </div>
     
-                <div className="mb-5 dark:bg-gray-700 py-10 px-5 rounded-lg">
+                <div className="mb-5 bg-purple-100 shadow-lg dark:bg-gray-700 py-10 px-5 rounded-lg">
                     <label className="block mb-2 text-lg font-medium text-gray-900 dark:text-white space-y-2">
                         <span>How interested are you in software development and application design?</span>
                         <Radio value='not interested' group='softwareDevelopment' handleRadio={handleRadio} responses={responses} />
@@ -295,7 +295,7 @@ export default function SurveyPreference() {
                     </label>
                 </div>
     
-                <div className="mb-5 dark:bg-gray-700 py-10 px-5 rounded-lg">
+                <div className="mb-5 bg-purple-100 shadow-lg dark:bg-gray-700 py-10 px-5 rounded-lg">
                     <label className="block mb-2 text-lg font-medium text-gray-900 dark:text-white space-y-2">
                         <span>How interested are you in understanding network systems and cybersecurity?</span>
                         <Radio value='not interested' group='networkSystems' handleRadio={handleRadio} responses={responses} />
@@ -304,7 +304,7 @@ export default function SurveyPreference() {
                     </label>
                 </div>
     
-                <div className="mb-5 dark:bg-gray-700 py-10 px-5 rounded-lg">
+                <div className="mb-5 bg-purple-100 shadow-lg dark:bg-gray-700 py-10 px-5 rounded-lg">
                     <label className="block mb-2 text-lg font-medium text-gray-900 dark:text-white space-y-2">
                         <span>How interested are you in exploring artificial intelligence and machine learning technologies?</span>
                         <Radio value='not interested' group='ai' handleRadio={handleRadio} responses={responses} />
@@ -313,7 +313,7 @@ export default function SurveyPreference() {
                     </label>
                 </div>
     
-                <div className="mb-5 dark:bg-gray-700 py-10 px-5 rounded-lg">
+                <div className="mb-5 bg-purple-100 shadow-lg dark:bg-gray-700 py-10 px-5 rounded-lg">
                     <label className="block mb-2 text-lg font-medium text-gray-900 dark:text-white space-y-2">
                         <span>How interested are you in database design and management?</span>
                         <Radio value='not interested' group='databaseManagement' handleRadio={handleRadio} responses={responses} />
@@ -322,7 +322,7 @@ export default function SurveyPreference() {
                     </label>
                 </div>
                 
-                <div className="mb-5 dark:bg-gray-700 py-10 px-5 rounded-lg">
+                <div className="mb-5 bg-purple-100 shadow-lg dark:bg-gray-700 py-10 px-5 rounded-lg">
                     <label className="block mb-2 text-lg font-medium text-gray-900 dark:text-white space-y-2">
                         <span>How interested are you in applying theoretical concepts to real-world scenarios and projects?</span>
                         <Radio value='not interested' group='realWorldApplications' handleRadio={handleRadio} responses={responses} />
@@ -331,7 +331,7 @@ export default function SurveyPreference() {
                         </label>
                     </div>
 
-                <div className="mb-5 dark:bg-gray-700 py-10 px-5 rounded-lg">
+                <div className="mb-5 bg-purple-100 shadow-lg dark:bg-gray-700 py-10 px-5 rounded-lg">
                     <label className="block mb-2 text-lg font-medium text-gray-900 dark:text-white space-y-2">
                         <span>How interested are you in working on group projects that simulate real industry environments?</span>
                         <Radio value='not interested' group='collaborativeProjects' handleRadio={handleRadio} responses={responses} />
@@ -340,7 +340,7 @@ export default function SurveyPreference() {
                     </label>
                 </div>
 
-                <div className="mb-5 dark:bg-gray-700 py-10 px-5 rounded-lg">
+                <div className="mb-5 bg-purple-100 shadow-lg dark:bg-gray-700 py-10 px-5 rounded-lg">
                     <label className="block mb-2 text-lg font-medium text-gray-900 dark:text-white space-y-2">
                         <span>How interested are you in learning about data visualization techniques and tools?</span>
                         <Radio value='not interested' group='dataVisualization' handleRadio={handleRadio} responses={responses} />
@@ -349,7 +349,7 @@ export default function SurveyPreference() {
                     </label>
                 </div>
 
-                <div className="mb-5 dark:bg-gray-700 py-10 px-5 rounded-lg">
+                <div className="mb-5 bg-purple-100 shadow-lg dark:bg-gray-700 py-10 px-5 rounded-lg">
                     <label className="block mb-2 text-lg font-medium text-gray-900 dark:text-white space-y-2">
                         <span>How interested are you in cloud computing and its applications?</span>
                         <Radio value='not interested' group='cloudTechnologies' handleRadio={handleRadio} responses={responses} />
@@ -357,7 +357,9 @@ export default function SurveyPreference() {
                         <Radio value='interested' group='cloudTechnologies' handleRadio={handleRadio} responses={responses}/>
                     </label>
                 </div>
-                <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
+                <div className='w-full flex justify-center'>
+                    <button type="submit" className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-lg px-20 py-3 text-center me-2 mb-2">Submit</button>
+                </div>
             </form>
         </div>
     </div>

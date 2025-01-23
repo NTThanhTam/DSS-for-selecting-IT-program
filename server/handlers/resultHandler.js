@@ -1,6 +1,6 @@
 import Topsis from './topsis.js';
 import {fetchPrograms, fetchCriteria} from './index.js';
-import {saveResult
+import {saveResult, getCriteriaThreshold
 } from "../DB/queries.js";
 
 const getProgramsData  = async () => {
@@ -21,11 +21,55 @@ const getCriteriasData  = async () => {
     }
 }
 
+const fetchCriteriaThreshold = async (criteria_id) =>{
+    try {
+        const threshold = await getCriteriaThreshold(criteria_id)
+        return threshold[0]; 
+    } catch (error) {
+        console.error("Error in fetchCriteriaThreshold():", error);
+        throw new Error("Error occurred while fetching criteria");
+    }
+}
+
+const matrixConvert = (rows, type) => {
+    if(type === 1){
+        return rows.reduce((matrix, row) => {
+            if (!matrix[row.attribute_name]) {
+                matrix[row.attribute_name] = {};
+            }
+            matrix[row.attribute_name][row.program_code] = row.threshold;
+            return matrix;
+        }, {})
+    } else {
+        return rows.reduce((result, row) => {
+            // Initialize program key if not already present
+            if (!result[row.program_code]) {
+                result[row.program_code] = [];
+            }
+            // Add the attribute to the program's array if it's not already included
+            if (!result[row.program_code].includes(row.attribute_name)) {
+                result[row.program_code].push(row.attribute_name);
+            }
+            return result;
+        }, {});
+    }
+}
+
+
 const programs = await getProgramsData()
 const criteria = await getCriteriasData()
 
+const english_InfluenceMatrix = matrixConvert(await fetchCriteriaThreshold(4), 1)
 
-export async function preferenceCalculate(answerSet) {
+const softSkill_InfluenceMatrix = matrixConvert(await fetchCriteriaThreshold(5), 1)
+
+const gpa_InfluenceMatrix = matrixConvert(await fetchCriteriaThreshold(6), 1)
+
+const language_InfluenceMatrix = matrixConvert(await fetchCriteriaThreshold(7), 1)
+
+const preferences_InfluenceMatrix = matrixConvert(await fetchCriteriaThreshold(1), 2)
+
+export async function surveyCalculate(answerSet) {
     const answers = answerSet.answers
 
     var interested = []
@@ -69,54 +113,6 @@ export async function preferenceCalculate(answerSet) {
     var C6_interestedSubjects = Array(3).fill(0);
     var C7_programmingLanguages = Array(3).fill(0);
 
-    const english_InfluenceMatrix = {
-        'beginner': { IT: 1, CS: 0.5, DS: 0.2 },
-        'intermediate': { IT: 2, CS: 2.5, DS: 2 },
-        'advanced': { IT: 3, CS: 3, DS: 3.5 },
-      };
-
-    const softSkill_InfluenceMatrix = {
-        "Communication": { IT: 4, CS: 3, DS: 4 },
-        "Teamwork": { IT: 5, CS: 3, DS: 4 },
-        "Problem solving": { IT: 4, CS: 5, DS: 4 },
-        "Adaptability": { IT: 3, CS: 3, DS: 3 },
-        "Critical thinking": { IT: 3, CS: 4, DS: 4 },
-        "Time management": { IT: 3, CS: 3, DS: 3 },
-        "Collaboration skills": { IT: 4, CS: 3, DS: 4 },
-        "Algorithmic thinking": { IT: 4, CS: 5, DS: 3 },
-    };
-
-    const gpaThresholds = {
-        "Calculus": { IT: 2.5, CS: 3.0, DS: 3.0 },
-        "Physics": { IT: 2.5, CS: 2.5, DS: 2.5 },
-        "Linear Algebra": { IT: 2.5, CS: 3.0, DS: 3.5 },
-        "Chemistry for Engineers": { IT: 2.5, CS: 2.5, DS: 2.5 },
-        "Introduction to Computing": { IT: 3.0, CS: 3.5, DS: 3.5 },
-        "Introduction to Data Science": { IT: 2.5, CS: 3.0, DS: 3.5 },
-        "C/C++ Programming": { IT: 3.0, CS: 3.5, DS: 3.0 },
-        "Critical Thinking": { IT: 3.0, CS: 3.0, DS: 3.0 },
-        "Object-Oriented Programming": { IT: 3.0, CS: 3.5, DS: 3.0 }
-    };
-    
-    
-    const language_InfluenceMatrix = {
-        Python: { IT: 2.5, CS: 3, DS: 3.5 },
-        Java: { IT: 3, CS: 3, DS: 2 },
-        "C++": { IT: 2, CS: 3.5, DS: 2 },
-        "C#": { IT: 3, CS: 2.5, DS: 1.5 },
-        PHP: { IT: 3, CS: 1.5, DS: 1 },
-        SQL: { IT: 2.5, CS: 2, DS: 3 },
-        R: { IT: 1.5, CS: 2, DS: 3.5 },
-        JavaScript: { IT: 3, CS: 2, DS: 1.5 },
-        Others: { IT: 1, CS: 1, DS: 1 },
-      };
-
-    const preferences = {
-        "IT": ["programming", "networkSystems", "cloudTechnologies", "realWorldApplications"],
-        "CS": ["programming", "softwareDevelopment", "ai", "collaborativeProjects"],
-        "DS": ["dataAnalysis", "dataVisualization", "databaseManagement", "ai"]
-    };
-
     C4_englishProficiency[0] = english_InfluenceMatrix[english].IT;
     C4_englishProficiency[1] = english_InfluenceMatrix[english].CS;
     C4_englishProficiency[2] = english_InfluenceMatrix[english].DS;
@@ -134,7 +130,7 @@ export async function preferenceCalculate(answerSet) {
 
     interestedSubjects.forEach(subject => {
         const { subject: subjectName, gpa } = subject;
-        const thresholds = gpaThresholds[subjectName];
+        const thresholds = gpa_InfluenceMatrix[subjectName];
         for (let field in thresholds){
             if (parseFloat(gpa) >= thresholds[field]) {
                 suitabilityScores[field] += 1; // Increment score for meeting the threshold
@@ -155,9 +151,9 @@ export async function preferenceCalculate(answerSet) {
         C7_programmingLanguages[2] += influence.DS;
     });
 
-    for (const program of Object.keys(preferences)) {
+    for (const program of Object.keys(preferences_InfluenceMatrix)) {
         const index = programs.findIndex(m => m.program_code === program);
-        const preference = preferences[program];
+        const preference = preferences_InfluenceMatrix[program];
         if (interested) {
             for (const element of interested) {
                 if (preference.includes(element)) {
@@ -225,18 +221,18 @@ export async function preferenceCalculate(answerSet) {
         }
     }
 
-
-
-
+    //Topsis calculation
     const topsis = new Topsis();
     const normalizedMatrix = topsis.normalize(performance_score);
     const weightedMatrix = topsis.weightCal(normalizedMatrix, weights);
     const bestSimilarity = topsis.idealSolution(weightedMatrix);
     const ranks = topsis.rank(bestSimilarity);
 
-    console.log(performance_score)
-    console.log(bestSimilarity)
-    console.log(ranks)
+    console.log({performance_score})
+    console.log({normalizedMatrix})
+    console.log({weightedMatrix})
+    console.log({bestSimilarity})
+    console.log({ranks})
 
     const rank_first = programs[ranks.indexOf(1)];  
     const rank_second = programs[ranks.indexOf(2)]; 

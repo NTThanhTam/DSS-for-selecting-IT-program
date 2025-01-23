@@ -9,10 +9,12 @@ import { getAllQuestions,
         getResults,
         deleteResult,
         getOneResult,
-        updateFeedback
+        updateFeedback,
+        deleteUser,
+        updateProgram
  } from "../handlers/index.js";
 
- import {preferenceCalculate} from "../handlers/resultHandler.js"
+ import {surveyCalculate } from "../handlers/resultHandler.js"
 
 const appRouter = Router();
 
@@ -23,7 +25,7 @@ appRouter.post("/result/preferences", async (req, res) => {
         try {
                 const answers = req.body;
                 // const {performance_score, normalizedMatrix, weightedMatrix, bestSimilarity, ranks} = await preferenceCalculate(answers)
-                const {result} = await preferenceCalculate(answers)
+                const {result} = await surveyCalculate(answers)
 
                 // console.log(ranks)
                 // return res.status(201).json({performance_score: {performance_score}, normalized: {normalizedMatrix}, weighted: {weightedMatrix}, bestSimilarity: {bestSimilarity}, ranks: {ranks}})
@@ -36,10 +38,12 @@ appRouter.post("/result/preferences", async (req, res) => {
 })
 appRouter.get("/criteria", getAllCriteria);
 appRouter.get("/program", getAllPrograms);
+appRouter.put("/program/:id", updateProgram);
 
 appRouter.get("/results/:id", getResults);
 appRouter.get("/result/:id", getOneResult);
 appRouter.put("/result/:id", updateFeedback);
 appRouter.delete("/results/delete/:id", deleteResult);
+appRouter.delete("/users/delete/:id", deleteUser);
 
 export default appRouter;

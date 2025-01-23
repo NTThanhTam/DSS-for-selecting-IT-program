@@ -10,6 +10,8 @@ import Footer from "./pages/footer.js"
 import SurveyPage from "./pages/surveyPage.js"
 import LoadingPage from "./pages/loadingPage.js";
 
+import { AdminDashboard } from './pages';
+
 import { react, useEffect, useState } from 'react';
 
 import {

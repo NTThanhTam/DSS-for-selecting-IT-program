@@ -16,11 +16,11 @@ const SurveyPage = () => {
                 <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
                     <div className="w-full">
                         <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-                            <div className="bg-gradient-to-r from-gray-700 to-gray-800 rounded-lg shadow-lg py-10 text-center mx-4 my-10">
-                                <h1 className="text-4xl font-extrabold text-white">
+                            <div className="bg-gradient-to-r from-gray-00 to-gray-300 dark:from-gray-700 dark:to-gray-800 rounded-lg shadow-lg py-10 text-center mx-4 my-10">
+                                <h1 className="text-4xl font-extrabold text-gray-700 dark:text-white">
                                     Welcome to the IT Program Selection Survey
                                 </h1>
-                                <p className="text-lg text-gray-200 mt-4">
+                                <p className="text-lg text-gray-500 dark:text-gray-200 mt-4">
                                     Discover the best program that aligns with your skills, interests, and goals.
                                 </p>
                             </div>
@@ -35,7 +35,7 @@ const SurveyPage = () => {
                 {survey && (
                     <div className='pt-20 px-20'>
                         <button 
-                            className="bg-gray-800 text-white px-4 py-2 rounded-lg shadow-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
+                            className="dark:bg-gray-800 dark:text-white px-4 py-2 rounded-lg shadow-md hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
                             onClick={() => {
                                 setSurvey(false);
                             }}

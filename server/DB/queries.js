@@ -103,6 +103,20 @@ export const getCriteria = async () => {
     }
 }
 
+export const getCriteriaThreshold = async (criteria_idid) => {
+    const QUERY = 'SELECT pc.attribute_name, p.program_code, pc.threshold FROM ProgramCriteria pc JOIN Program p ON pc.program_id = p.program_id WHERE pc.criteria_id = ?; ';
+    try {
+        const client = await pool.getConnection();
+        const result = await client.query(QUERY, [criteria_idid]);
+        client.destroy();
+        return result;
+    } catch (error) {
+        console.log("Error in getCriteriaThreshold(): ");
+        console.log(error);
+        throw error;
+    }
+}
+
 export const findAllUsers = async () => {
     const QUERY = "SELECT * FROM User";
     try {
@@ -142,6 +156,21 @@ export const updateResultFeedback = async (result_id, feedback) => {
         return result[0];
     } catch (error) {
         console.log("Error in updateResultFeedback(): ");
+        console.log(error);
+        throw error;
+    }
+    
+}
+
+export const updateAProgram = async (program_id, program_text, description, explanation) => {
+    const QUERY = "UPDATE Program SET program_text = ?, description = ?, explanation = ? WHERE program_id = ?";
+    try {
+        const client = await pool.getConnection();
+        const program = await client.query(QUERY, [program_text, description, explanation, program_id]);
+        client.destroy();
+        return program[0];
+    } catch (error) {
+        console.log("Error in updateAProgram(): ");
         console.log(error);
         throw error;
     }
@@ -202,6 +231,23 @@ export const saveUser = async (username, password, role) => {
         return result[0];
     } catch (error) {
         console.log("Error in saveUser(): ");
+        console.log(error);
+        throw error;
+    }
+    
+}
+
+export const deleteAUser = async (id) => {
+    const QUERY1 = "DELETE from result WHERE user_id = ?";
+    const QUERY2 = "DELETE FROM user WHERE user_id = ?";
+    try {
+        const client = await pool.getConnection();
+        await client.query(QUERY1, [id]);
+        const result = await client.query(QUERY2, [id]);
+        client.destroy();
+        return result[0];
+    } catch (error) {
+        console.log("Error in deleteUser(): ");
         console.log(error);
         throw error;
     }

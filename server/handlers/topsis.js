@@ -25,12 +25,12 @@ class Topsis {
 
     weightCal(normalizedMatrix, weights) {
         // const weights = [0.2, 0.15, 0.15, 0.125, 0.125, 0.1, 0.05, 0.05, 0.05];
-
+        // console.log({weight: weights})
         const row = normalizedMatrix.length;
         const col = normalizedMatrix[0].length;
 
         const weightedNormalized = Array.from({ length: row }, () => new Array(col).fill(0));
-
+        // console.log({initial: weightedNormalized})
         for (let i = 0; i < row; i++) {
             for (let j = 0; j < col; j++) {
                 weightedNormalized[i][j] = normalizedMatrix[i][j] * weights[j];
@@ -68,6 +68,8 @@ class Topsis {
             worstDistance[i] = Math.sqrt(worstDistance[i]);
             bestDistance[i] = Math.sqrt(bestDistance[i]);
         }
+        console.log({worstDistance})
+        console.log({bestDistance})
 
         const bestSimilarity = new Array(row).fill(0);
         for (let i = 0; i < row; i++) {

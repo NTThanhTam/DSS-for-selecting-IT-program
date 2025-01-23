@@ -8,7 +8,9 @@ import {findAllQuestions,
         findResults,
         deleteAResult,
         getResult,
-        updateResultFeedback
+        updateResultFeedback,
+        deleteAUser,
+        updateAProgram
 } from "../DB/queries.js";
 
 export const getAllQuestions = async (req, res) => { 
@@ -138,10 +140,33 @@ export const updateFeedback = async (req, res) => {
     }    
 };
 
+export const updateProgram = async (req, res) => { 
+    try {
+        const program_id = req.params.id
+        const {program_text, description, explanation} = req.body;
+        const program = await updateAProgram(program_id, program_text, description, explanation);
+        return res.status(200).json({program})
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({message: "Error occured"})
+    }    
+};
+
 export const deleteResult = async (req, res) => { 
     try {
         const result_id = req.params.id;
         const results = await deleteAResult(result_id);
+        return res.status(200).json({results})
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({message: "Error occured"})
+    }    
+};
+
+export const deleteUser = async (req, res) => { 
+    try {
+        const user_id = req.params.id;
+        const results = await deleteAUser(user_id);
         return res.status(200).json({results})
     } catch (error) {
         console.log(error)

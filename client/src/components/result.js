@@ -76,8 +76,8 @@ const Result = () => {
             <div className=" p-10 flex flex-col space-y-10 items-center">
                 <div className="w-full">
                     <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-                        <div className="flex flex-col items-center bg-gradient-to-r from-gray-700 to-gray-800 rounded-lg shadow-lg py-10 text-center mx-4 my-10">
-                            <h2 align="center" className="bg-gradient-to-r from-purple-300 to-purple-300 bg-clip-text text-transparent mb-5 font-mono font-bold   text-5xl max-w-4xl tracking-tight">{resultProgram.program_text}</h2>
+                        <div className="flex flex-col items-center bg-gradient-to-r from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-800 rounded-lg shadow-lg py-10 text-center mx-4 my-10">
+                            <h2 align="center" className="bg-purple-700 dark:bg-purple-300 bg-clip-text text-transparent mb-5 font-mono font-bold   text-5xl max-w-4xl tracking-tight">{resultProgram.program_text}</h2>
                             <h3 align="center" className="dark:text-white font-light text-xl">is the best IT program for you!</h3>
 
                             <hr class="w-48 h-1 mx-auto my-4 bg-gray-100 border-0 rounded md:my-10 dark:bg-gray-700"/>
@@ -138,7 +138,7 @@ const Result = () => {
                     <div className='space-y-10'>
                         <h3 className="text-2xl font-medium dark:text-gray-300">Need More Information?</h3>
                         <p className='mx-auto mt-6 max-w-2xl text-lg tracking-tight dark:text-gray-300'>If you have questions or need more details about the programs, feel free to explore our information page.</p>
-                        <button onClick={() => {navigate("/information")} } className="dark:text-white dark:bg-gray-900 font-light tracking-wide text-xl rounded-full px-5 py-3  hover:bg-gray-500" >More information</button>
+                        <button onClick={() => {navigate("/information")} } className="border hover:bg-purple-300 hover:text-purple-800 font-semibold border-purple-800 dark:text-white dark:bg-gray-900 font-light tracking-wide text-xl rounded-full px-5 py-3" >More information</button>
                     </div>
                 </div>
             </div>
