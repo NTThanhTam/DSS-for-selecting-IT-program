@@ -255,7 +255,7 @@ export default function SurveyPreference() {
     
                 <div className="mb-5 bg-purple-100 shadow-lg dark:bg-gray-700 py-10 px-5 rounded-lg">
                     <label className="mb-2 text-lg font-medium text-gray-900 dark:text-white space-y-2">
-                        <span>How interested are you in learning various programming languages (e.g., Python, Java, C++)?</span>
+                        <span>How interested are you in programming?</span>
                         <Radio value='not interested' group='programming' handleRadio={handleRadio} responses={responses} />
                         <Radio value='quite interested' group='programming' handleRadio={handleRadio} responses={responses}/>
                         <Radio value='interested' group='programming' handleRadio={handleRadio} responses={responses}/>

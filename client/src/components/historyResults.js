@@ -33,26 +33,25 @@ const HistoryResults = () => {
     }
     console.log(results)
     return (
-        <div className='h-max'>
+        <div className='h-auto min-h-screen'>
             {!results.length && 
-            <div className="h-maxmax m-auto flex flex-col justify-center items-center dark:bg-gray-800 ">
+            <div className="h-max min-h-screen m-auto flex flex-col justify-center items-center dark:bg-gray-800 ">
                 <p className='text-2xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white'>It seems empty here.</p>
                 <p className='text-xl leading-tight tracking-tight text-gray-900 dark:text-white'>Let's go make some <a href="/survey" className="font-medium text-primary-600 hover:underline dark:text-primary-500">surveys</a></p>
-
             </div>
             }
             {results.length && 
-                <section className="h-max bg-white py-8 dark:bg-gray-800 md:py-16">
+                <section className="h-max min-h-screen bg-white py-8 dark:bg-gray-800 md:py-16">
                     <div className="mx-auto max-w-screen-xl px-4 2xl:px-0">
                         <div className="mx-auto max-w-5xl">
                             <div className="mt-6 flow-root sm:mt-8">
                                 <div className="divide-y divide-gray-200 dark:divide-gray-700">
                             {
-                                results.map(r => (
+                                results.map((r, i)=> (
                                     <div className="flex flex-wrap items-center gap-y-4 py-6" key={r.result_id}>
                                         <dl className="flex flex-col justify-center items-center w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
                                             <dt className="text-base font-medium text-gray-500 dark:text-gray-400">Result ID:</dt>
-                                            <dd className="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">{r.result_id}</dd>
+                                            <dd className="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">{i+1}</dd>
                                         </dl>
 
                                         <dl className="flex flex-col justify-center items-center w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
@@ -117,8 +116,6 @@ const HistoryResults = () => {
                     </div>
                 </section>
             }
-
-            
         </div>
     )
 }

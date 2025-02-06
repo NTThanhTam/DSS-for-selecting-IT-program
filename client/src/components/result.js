@@ -62,7 +62,6 @@ const Result = () => {
     
     console.log({result: result})
     const resultProgram = programs.find(p => p.program_code === result.rank_first)
-
     if (loadingPrograms || loadingResult) {
         return (
             <div>Loading...</div>
@@ -95,6 +94,33 @@ const Result = () => {
                                 <h4 className="text-2xl font-medium">Why is this chosen?</h4>
                                 <p className="mt-4 text-lg">
                                     {resultProgram.explanation || "This program provides you with essential skills and knowledge to advance in the IT field."}
+                                </p>
+                            </div>
+
+                            <hr class="w-48 h-1 mx-auto my-4 bg-gray-100 border-0 rounded md:my-10 dark:bg-gray-700"/>
+
+                            <div className="dark:text-gray-300 text-center max-w-2xl">
+                                <h4 className="text-2xl font-medium">Some area keywords you should focus on</h4>
+                                <p className="mt-4 text-lg">
+                                    {resultProgram.focusArea}
+                                </p>
+                            </div>
+
+                            <hr class="w-48 h-1 mx-auto my-4 bg-gray-100 border-0 rounded md:my-10 dark:bg-gray-700"/>
+
+                            <div className="dark:text-gray-300 text-center max-w-2xl">
+                                <h4 className="text-2xl font-medium">What you should study?</h4>
+                                <p className="mt-4 text-lg">
+                                    {resultProgram.focusLearning}
+                                </p>
+                            </div>
+
+                            <hr class="w-48 h-1 mx-auto my-4 bg-gray-100 border-0 rounded md:my-10 dark:bg-gray-700"/>
+
+                            <div className="dark:text-gray-300 text-center max-w-2xl">
+                                <h4 className="text-2xl font-medium">Tip</h4>
+                                <p className="mt-4 text-lg">
+                                    {resultProgram.tip}
                                 </p>
                             </div>
                         </div>

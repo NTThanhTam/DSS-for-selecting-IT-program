@@ -9,6 +9,9 @@ function ProgramCard({ program, onUpdate }) {
         program_text: program.program_text,
         description: program.description,
         explanation: program.explanation,
+        focusArea: program.focusArea,
+        focusLearning: program.focusLearning,
+        tip: program.tip,
     });
 
     const [updateFields, setUpdateFields] = useState(initialFields);
@@ -64,6 +67,18 @@ function ProgramCard({ program, onUpdate }) {
                         <dt className="text-base font-medium text-gray-500 dark:text-gray-400">Explanation:</dt>
                         <dd className="text-base font-semibold text-gray-900 dark:text-white">{program.explanation}</dd>
                     </dl>
+                    <dl className="flex flex-row px-5 py-2 space-x-3 w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
+                        <dt className="text-base font-medium text-gray-500 dark:text-gray-400">Focus area:</dt>
+                        <dd className="text-base font-semibold text-gray-900 dark:text-white">{program.focusArea}</dd>
+                    </dl>
+                    <dl className="flex flex-row px-5 py-2 space-x-3 w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
+                        <dt className="text-base font-medium text-gray-500 dark:text-gray-400">Focus learning:</dt>
+                        <dd className="text-base font-semibold text-gray-900 dark:text-white">{program.focusLearning}</dd>
+                    </dl>
+                    <dl className="flex flex-row px-5 py-2 space-x-3 w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
+                        <dt className="text-base font-medium text-gray-500 dark:text-gray-400">Tip:</dt>
+                        <dd className="text-base font-semibold text-gray-900 dark:text-white">{program.tip}</dd>
+                    </dl>
                 </>
             ) : (
                 <>
@@ -105,6 +120,36 @@ function ProgramCard({ program, onUpdate }) {
                                 name='explanation'
                                 rows ='3'
                                 value={updateFields.explanation}
+                                onChange={handleChange}
+                            />
+                    </dl>
+                    <dl className="flex flex-row items-center px-5 py-2 space-x-3 w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
+                        <dt className="text-base font-medium text-gray-500 dark:text-gray-400">Focus area:</dt>
+                        <textarea type="text" 
+                                className='bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' 
+                                name='focusArea'
+                                rows ='3'
+                                value={updateFields.focusArea}
+                                onChange={handleChange}
+                            />
+                    </dl>
+                    <dl className="flex flex-row items-center px-5 py-2 space-x-3 w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
+                        <dt className="text-base font-medium text-gray-500 dark:text-gray-400">Focus learning:</dt>
+                        <textarea type="text" 
+                                className='bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' 
+                                name='focusLearning'
+                                rows ='3'
+                                value={updateFields.focusLearning}
+                                onChange={handleChange}
+                            />
+                    </dl>
+                    <dl className="flex flex-row items-center px-5 py-2 space-x-3 w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
+                        <dt className="text-base font-medium text-gray-500 dark:text-gray-400">tip:</dt>
+                        <textarea type="text" 
+                                className='bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' 
+                                name='tip'
+                                rows ='3'
+                                value={updateFields.tip}
                                 onChange={handleChange}
                             />
                     </dl>
