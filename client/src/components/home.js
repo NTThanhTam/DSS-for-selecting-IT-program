@@ -6,7 +6,7 @@ import AdminDashboard from "../pages/adminDashboard.js"
 const Home = () => {
     const {user} = useAuth()
     return (
-        <div className='bg-gradient-to-r from-white to-purple-300 dark:bg-gradient-to-r dark:from-gray-900 dark:to-gray-800'>
+        <div className='bg-white/80 dark:bg-gray-900/90'>
             {user?.user_role === "student" && <StudentHome />}
             {!user && <StudentHome />}
             {/* <StudentHome /> */}

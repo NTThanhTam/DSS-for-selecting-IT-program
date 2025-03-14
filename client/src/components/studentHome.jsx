@@ -25,13 +25,26 @@ const StudentHome = () => {
                     <h2 className='text-2xl font-bold'>Find Your Ideal IT Program</h2>
                     <p className='mx-auto mt-6 max-w-2xl text-lg tracking-tight dark:text-gray-300'>Your journey into the world of technology starts here! Take our survey to receive personalized recommendations based on your skills and interests.</p>
                     <div className="">
-                        <button onClick={handleSurveyButton} className="border hover:bg-purple-300 hover:text-purple-800 font-semibold border-purple-800 dark:text-white dark:bg-gray-900 font-light tracking-wide text-xl rounded-full px-5 py-3  " >Take survey</button>
+                        <button 
+                            onClick={handleSurveyButton} 
+                            className="border-2 border-purple-500 text-white font-semibold tracking-wide text-xl rounded-full px-6 py-3 
+                                        bg-gradient-to-r from-purple-600 to-purple-800 shadow-lg hover:shadow-purple-500/50 
+                                        hover:from-purple-500 hover:to-purple-700 transition-all duration-300 " >
+                                Take survey
+                        </button>
                     </div>
                 </div>
                 <div className='space-y-10'>
                     <h3>Need More Information?</h3>
                     <p className='mx-auto mt-6 max-w-2xl text-lg tracking-tight dark:text-gray-300'>If you have questions or need more details about the programs, feel free to explore our information page.</p>
-                    <button onClick={() => {navigate("/information")} } className="border hover:bg-purple-300 hover:text-purple-800 font-semibold border-purple-800 dark:text-white dark:bg-gray-900 font-light tracking-wide text-xl rounded-full px-5 py-3 " >More information</button>
+                    <button 
+                        onClick={() => {navigate("/information")} } 
+                        className="border-2 border-purple-500 text-white font-semibold tracking-wide text-xl rounded-full px-6 py-3 
+                                        bg-gradient-to-r from-purple-600 to-purple-800 shadow-lg hover:shadow-purple-500/50 
+                                        hover:from-purple-500 hover:to-purple-700 transition-all duration-300" 
+                        >
+                            More information
+                    </button>
                 </div>
             </div>
         </div>

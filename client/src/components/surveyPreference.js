@@ -203,7 +203,7 @@ export default function SurveyPreference() {
 
 
 
-    console.log({english: responses.answers.englishProficiency})
+    // console.log({english: responses.answers.englishProficiency})
 
     return (
     <div className='flex flex-col mx-auto '> 

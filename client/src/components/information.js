@@ -115,33 +115,42 @@ const Information = () => {
     return (
         <div className='h-max flex flex-col pt-10 m-0 dark:bg-gray-800'>
             <div className='flex-grow'>
-                <ul className='flex p-20 space-x-10 items-center justify-center '>
-                    <li className='transition ease-in-out hover:-translate-y-1 hover:scale-110 duration-200 '>
-                        <input type='radio' id='programs' name='information' value='programs' className='hidden peer ' onChange={handleChange} checked={checkedValue === 'programs'}/>
-                        <label htmlFor='programs' className='inline-flex items-center justify-between p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700'>                           
-                            <div className='block'>
-                                <div className='w-full text-lg font-semibold '>Programs</div>
-                            </div>
-                        </label>
-                    </li >
+                <ul className='flex p-20 space-x-6 items-center justify-center'>
+                    {/* Programs */}
                     <li className='transition ease-in-out hover:-translate-y-1 hover:scale-110 duration-200'>
-                        <input type='radio' id='faculty-insight' name='information' value='faculty-insight' className='hidden peer' onChange={handleChange}/>
-                        <label htmlFor='faculty-insight' className='inline-flex items-center justify-between p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700'>
-                            <div className='block'>
-                                <div className='w-full text-lg font-semibold'>Faculty Insights</div>
-                            </div>
+                        <input type='radio' id='programs' name='information' value='programs' className='hidden peer' onChange={handleChange} checked={checkedValue === 'programs'}/>
+                        <label htmlFor='programs' className='inline-flex items-center justify-center px-6 py-4 text-gray-500 bg-white border-2 border-gray-300 rounded-lg shadow-md cursor-pointer 
+                                                            dark:text-gray-300 dark:bg-gray-800 dark:border-gray-600 
+                                                            peer-checked:bg-purple-500 peer-checked:text-white peer-checked:border-purple-700 
+                                                            hover:bg-gray-100 dark:hover:bg-gray-700 hover:shadow-lg transition-all duration-300'>
+                            <span className='w-full text-lg font-semibold'>Programs</span>
                         </label>
                     </li>
-                    <li className='transition ease-in-out hover:-translate-y-1 hover:scale-110 duration-200'> 
+
+                    {/* Faculty Insights */}
+                    <li className='transition ease-in-out hover:-translate-y-1 hover:scale-110 duration-200'>
+                        <input type='radio' id='faculty-insight' name='information' value='faculty-insight' className='hidden peer' onChange={handleChange}/>
+                        <label htmlFor='faculty-insight' className='inline-flex items-center justify-center px-6 py-4 text-gray-500 bg-white border-2 border-gray-300 rounded-lg shadow-md cursor-pointer 
+                                                                    dark:text-gray-300 dark:bg-gray-800 dark:border-gray-600 
+                                                                    peer-checked:bg-purple-500 peer-checked:text-white peer-checked:border-purple-700 
+                                                                    hover:bg-gray-100 dark:hover:bg-gray-700 hover:shadow-lg transition-all duration-300'>
+                            <span className='w-full text-lg font-semibold'>Faculty Insights</span>
+                        </label>
+                    </li>
+
+                    {/* Market Insights */}
+                    <li className='transition ease-in-out hover:-translate-y-1 hover:scale-110 duration-200'>
                         <input type='radio' id='market-insight' name='information' value='market-insight' className='hidden peer' onChange={handleChange}/>
-                        <label htmlFor='market-insight' className='inline-flex items-center justify-between p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700'>
-                            <div className='block'>
-                                <div className='w-full text-lg font-semibold'>Market Insights</div>
-                            </div>
+                        <label htmlFor='market-insight' className='inline-flex items-center justify-center px-6 py-4 text-gray-500 bg-white border-2 border-gray-300 rounded-lg shadow-md cursor-pointer 
+                                                                dark:text-gray-300 dark:bg-gray-800 dark:border-gray-600 
+                                                                peer-checked:bg-purple-500 peer-checked:text-white peer-checked:border-purple-700 
+                                                                hover:bg-gray-100 dark:hover:bg-gray-700 hover:shadow-lg transition-all duration-300'>
+                            <span className='w-full text-lg font-semibold'>Market Insights</span>
                         </label>
                     </li>
                 </ul>
             </div>
+
             {checkedValue === 'programs' && (
                 <div className='flex dark:bg-gray-800 p-5 items-center justify-center'>
                     <ProgramInformation />

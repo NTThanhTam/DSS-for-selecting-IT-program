@@ -1,6 +1,7 @@
 import { useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom'
+import { ReviewModal } from './modal';
 import axios from 'axios'
 
 const Result = () => {
@@ -72,60 +73,99 @@ const Result = () => {
         
         <div className="h-max m-0 dark:bg-gray-800">
             
-            <div className=" p-10 flex flex-col space-y-10 items-center">
-                <div className="w-full">
-                    <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-                        <div className="flex flex-col items-center bg-gradient-to-r from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-800 rounded-lg shadow-lg py-10 text-center mx-4 my-10">
-                            <h2 align="center" className="bg-purple-700 dark:bg-purple-300 bg-clip-text text-transparent mb-5 font-mono font-bold   text-5xl max-w-4xl tracking-tight">{resultProgram.program_text}</h2>
-                            <h3 align="center" className="dark:text-white font-light text-xl">is the best IT program for you!</h3>
+            <div className="p-10 flex flex-col space-y-10 items-center">
+                <div className="w-full max-w-6xl">
+                    <div className="pt-6 space-y-4 md:space-y-6 sm:pt-8">
+                        <div className="flex flex-col items-center rounded-xl shadow-xl py-10 text-center mx-4 my-10 
+                            bg-white/80 dark:bg-gray-900/90 backdrop-blur-lg 
+                            border-2 border-gray-400 dark:border-purple-500/60 
+                            hover:border-purple-500 transition-all duration-300">
+                            
+                            {/* Main Title */}
+                            <h2 align="center" className="bg-gradient-to-r from-purple-600 to-purple-800 dark:from-purple-300 dark:to-purple-500
+                                                        bg-clip-text text-transparent font-mono font-bold text-5xl tracking-tight mb-5">
+                                {resultProgram.program_text}
+                            </h2>
 
-                            <hr class="w-48 h-1 mx-auto my-4 bg-gray-100 border-0 rounded md:my-10 dark:bg-gray-700"/>
-        
-                            <div className="dark:text-gray-300 text-center max-w-2xl">
-                                <h4 className="text-2xl font-medium">About the Program</h4>
+                            <h3 align="center" className="text-gray-800 dark:text-gray-300 font-light text-xl">
+                                is the best IT program for you!
+                            </h3>
+
+                            {/* Divider */}
+                            <hr className="w-48 h-1 mx-auto my-6 bg-gray-300 border-0 rounded dark:bg-gray-600"/>
+
+                            {/* About the Program */}
+                            <div className="text-gray-800 dark:text-gray-300 text-center max-w-2xl">
+                                <h4 className="text-2xl font-semibold bg-gradient-to-r from-gray-800 to-gray-900 dark:from-gray-200 dark:to-gray-400 bg-clip-text text-transparent">
+                                    About the Program
+                                </h4>
                                 <p className="mt-4 text-lg">
                                     {resultProgram.description || "This program provides you with essential skills and knowledge to advance in the IT field."}
                                 </p>
                             </div>
 
-                            <hr class="w-48 h-1 mx-auto my-4 bg-gray-100 border-0 rounded md:my-10 dark:bg-gray-700"/>
+                            {/* Divider */}
+                            <hr className="w-48 h-1 mx-auto my-6 bg-gray-300 border-0 rounded dark:bg-gray-600"/>
 
-                            <div className="dark:text-gray-300 text-center max-w-2xl">
-                                <h4 className="text-2xl font-medium">Why is this chosen?</h4>
+                            {/* Why is this chosen? */}
+                            <div className="text-gray-800 dark:text-gray-300 text-center max-w-2xl">
+                                <h4 className="text-2xl font-semibold bg-gradient-to-r from-gray-800 to-gray-900 dark:from-gray-200 dark:to-gray-400 bg-clip-text text-transparent">
+                                    Why is this chosen?
+                                </h4>
                                 <p className="mt-4 text-lg">
                                     {resultProgram.explanation || "This program provides you with essential skills and knowledge to advance in the IT field."}
                                 </p>
                             </div>
-
-                            <hr class="w-48 h-1 mx-auto my-4 bg-gray-100 border-0 rounded md:my-10 dark:bg-gray-700"/>
-
-                            <div className="dark:text-gray-300 text-center max-w-2xl">
-                                <h4 className="text-2xl font-medium">Some area keywords you should focus on</h4>
-                                <p className="mt-4 text-lg">
-                                    {resultProgram.focusArea}
-                                </p>
-                            </div>
-
-                            <hr class="w-48 h-1 mx-auto my-4 bg-gray-100 border-0 rounded md:my-10 dark:bg-gray-700"/>
-
-                            <div className="dark:text-gray-300 text-center max-w-2xl">
-                                <h4 className="text-2xl font-medium">What you should study?</h4>
-                                <p className="mt-4 text-lg">
-                                    {resultProgram.focusLearning}
-                                </p>
-                            </div>
-
-                            <hr class="w-48 h-1 mx-auto my-4 bg-gray-100 border-0 rounded md:my-10 dark:bg-gray-700"/>
-
-                            <div className="dark:text-gray-300 text-center max-w-2xl">
-                                <h4 className="text-2xl font-medium">Tip</h4>
-                                <p className="mt-4 text-lg">
-                                    {resultProgram.tip}
-                                </p>
-                            </div>
                         </div>
-                        
                     </div>
+                </div>
+
+
+                <ReviewModal />
+
+                <hr class="w-48 h-1 mx-auto my-4 bg-gray-100 border-0 rounded md:my-10 dark:bg-gray-700"/>
+
+
+                <div className="grid grid-cols-3 w-full">
+                                <div className='items-center rounded-xl shadow-lg p-10 text-center mx-4 my-10 transition-all duration-300 
+                                                bg-white/70 dark:bg-gray-900/80 backdrop-blur-lg border border-gray-300/50 dark:border-gray-700/50 
+                                                hover:shadow-lg hover:shadow-purple-500/40'>
+                                    <div className=" text-center max-w-2xl">
+                                        <h4 className="text-2xl font-semibold bg-gradient-to-r from-purple-500 to-purple-700 bg-clip-text text-transparent 
+                                                    dark:from-purple-300 dark:to-purple-400">
+                                            Area keywords you should focus</h4>
+                                        <p className="text-gray-700 dark:text-gray-300 mt-4 text-lg">
+                                            {resultProgram.focusArea}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div className='items-center rounded-xl shadow-lg p-10 text-center mx-4 my-10 transition-all duration-300 
+                                                bg-white/70 dark:bg-gray-900/80 backdrop-blur-lg border border-gray-300/50 dark:border-gray-700/50 
+                                                hover:shadow-lg hover:shadow-purple-500/40'>
+                                    <div className="dark:text-gray-300 text-center max-w-2xl">
+                                        <h4 className="text-2xl font-semibold bg-gradient-to-r from-purple-500 to-purple-700 bg-clip-text text-transparent 
+                                                    dark:from-purple-300 dark:to-purple-400">
+                                            What you should study?</h4>
+                                        <p className="text-gray-700 dark:text-gray-300 mt-4 text-lg">
+                                            {resultProgram.focusLearning}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div className="items-center rounded-xl shadow-lg p-10 text-center mx-4 my-10 transition-all duration-300 
+                                                bg-white/70 dark:bg-gray-900/80 backdrop-blur-lg border border-gray-300/50 dark:border-gray-700/50 
+                                                hover:shadow-lg hover:shadow-purple-500/40">
+                                    <div className="text-center max-w-2xl">
+                                        <h4 className="text-2xl font-semibold bg-gradient-to-r from-purple-500 to-purple-700 bg-clip-text text-transparent 
+                                                    dark:from-purple-300 dark:to-purple-400">
+                                            Tip
+                                        </h4>
+                                        <p className="text-gray-700 dark:text-gray-300 mt-4 text-lg">
+                                            {resultProgram.tip}
+                                        </p>
+                                    </div>
+                                </div>
+
+
                 </div>
 
                 <hr class="w-48 h-1 mx-auto my-4 bg-gray-100 border-0 rounded md:my-10 dark:bg-gray-700"/>
@@ -164,7 +204,14 @@ const Result = () => {
                     <div className='space-y-10'>
                         <h3 className="text-2xl font-medium dark:text-gray-300">Need More Information?</h3>
                         <p className='mx-auto mt-6 max-w-2xl text-lg tracking-tight dark:text-gray-300'>If you have questions or need more details about the programs, feel free to explore our information page.</p>
-                        <button onClick={() => {navigate("/information")} } className="border hover:bg-purple-300 hover:text-purple-800 font-semibold border-purple-800 dark:text-white dark:bg-gray-900 font-light tracking-wide text-xl rounded-full px-5 py-3" >More information</button>
+                        <button 
+                            onClick={() => {navigate("/information")} } 
+                            className="border-2 border-purple-500 text-white font-semibold tracking-wide text-xl rounded-full px-6 py-3 
+                                        bg-gradient-to-r from-purple-600 to-purple-800 shadow-lg hover:shadow-purple-500/50 
+                                        hover:from-purple-500 hover:to-purple-700 transition-all duration-300" 
+                            >
+                                More information
+                            </button>
                     </div>
                 </div>
             </div>

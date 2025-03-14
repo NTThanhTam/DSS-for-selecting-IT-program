@@ -22,14 +22,18 @@ const NavBar = () => {
             <div className="hidden md:flex space-x-6">
                 <a
                     href="/"
-                    className="text-white hover:scale-125 transition-transform duration-200 hover:text-gray-200 transition-colors duration-300"
+                    className="relative px-4 py-2 text-white font-medium tracking-wide rounded-md transition-all duration-300 
+               hover:text-purple-300 after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-purple-400 
+               hover:after:w-full after:transition-all after:duration-300"
                 >
                     {user?.user_role === 'admin' ? (<>Dashboard</>) : (<>Home</>)}
                 </a>
 
                 <a
                     href="/information"
-                    className="text-white hover:scale-125 transition-transform duration-200 hover:text-gray-200 transition-colors duration-300"
+                    className="relative px-4 py-2 text-white font-medium tracking-wide rounded-md transition-all duration-300 
+               hover:text-purple-300 after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-purple-400 
+               hover:after:w-full after:transition-all after:duration-300"
                 >
                     Information
                 </a>
@@ -38,13 +42,17 @@ const NavBar = () => {
                     <div className="hidden md:flex space-x-6">
                         <a
                             href="/survey"
-                            className="text-white hover:scale-125 transition-transform duration-200 hover:text-gray-200 transition-colors duration-300"
+                            className="relative px-4 py-2 text-white font-medium tracking-wide rounded-md transition-all duration-300 
+               hover:text-purple-300 after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-purple-400 
+               hover:after:w-full after:transition-all after:duration-300"
                         >
                         Take Survey
                         </a>
                         <a
                             href="/history"
-                            className="text-white hover:scale-125 transition-transform duration-200 hover:text-gray-200 transition-colors duration-300"
+                            className="relative px-4 py-2 text-white font-medium tracking-wide rounded-md transition-all duration-300 
+               hover:text-purple-300 after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-purple-400 
+               hover:after:w-full after:transition-all after:duration-300"
                         >
                             History Results
                         </a>
@@ -63,14 +71,18 @@ const NavBar = () => {
                 {user ? (
                     <button
                         onClick={handleLogout}
-                        className="text-white border border-purple-500 rounded-lg hover:bg-purple-500 px-4 py-1 rounded-lg transition-colors duration-300"
+                        className="px-4 py-2 font-medium text-white border-2 border-purple-400 rounded-full transition-all duration-300 
+               hover:bg-purple-500 hover:text-gray-900 hover:border-purple-600 shadow-md 
+               focus:ring-2 focus:ring-purple-400 focus:ring-offset-2"
                     >
                         Log out
                     </button>
                 ) : (
                     <a
                         href="/login"
-                        className="text-white border border-purple-500 rounded-lg hover:bg-purple-500 px-4 py-1 rounded-lg transition-colors duration-300"
+                        className="px-4 py-2 font-medium text-white border-2 border-purple-400 rounded-full transition-all duration-300 
+               hover:bg-purple-500 hover:text-gray-900 hover:border-purple-600 shadow-md 
+               focus:ring-2 focus:ring-purple-400 focus:ring-offset-2"
                     >
                         Sign in
                     </a>
