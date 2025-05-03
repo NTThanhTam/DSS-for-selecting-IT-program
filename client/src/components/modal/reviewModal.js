@@ -1,9 +1,5 @@
-import { useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom'
-import axios from 'axios'
 import React from "react";
-// import useAuth from '../hooks/useAuth.js'
 import { useId } from "react";
 
 function Input ({value, group, responses}) {
@@ -17,6 +13,7 @@ function Input ({value, group, responses}) {
                 id={value}
                 className='bg-gray-50 border border-gray-500 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/3 p-2 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
                 value={subjectData.gpa}
+                readOnly
                 required
                 />
         </label>
@@ -34,6 +31,7 @@ function Radio({value, group, responses}){
                 value={value} 
                 name={group} 
                 checked={responses.answers[group] === value}
+                readOnly
                 className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" 
             />
             <label 
@@ -54,6 +52,7 @@ function Subject ({value, group, responses, }) {
                     className='w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'
                     id={value}
                     value= {value}
+                    readOnly
                     checked = {responses.answers[group].some(s => s.subject === value)}
                 />
                 <label htmlFor={value} className="ml-2 dark:text-gray-300">{value}</label>                
@@ -64,36 +63,11 @@ function Subject ({value, group, responses, }) {
     )
 }
 
-const ReviewModal = () => {
+const ReviewModal = (response) => {
 
     const [isOpen, setIsOpen] = useState(false);
-    // console.log(isOpen)
-
-
-    // const {user} = useAuth()
-
-    const navigate = useNavigate()
-
-    const [responses, setResponses] = useState({
-        user_id: 11,
-        answers: {
-            programming: 'not interested',
-            dataAnalysis: 'not interested',
-            softwareDevelopment: 'not interested',
-            networkSystems: 'not interested',
-            ai: 'not interested',
-            databaseManagement: 'not interested',
-            realWorldApplications: 'not interested',
-            collaborativeProjects: 'not interested',
-            dataVisualization: 'not interested',
-            cloudTechnologies: 'not interested',
-            englishProficiency: 'beginner',
-            softSkills: [],
-            programmingLanguages: [],
-            interestedSubjects: []
-        }
-    });
-
+    const [responses, setResponses] = useState(response.responses);
+    console.log(responses.programmingLanguages)
 
     function Checkbox ({value, group}) {
         return (
@@ -102,6 +76,7 @@ const ReviewModal = () => {
                     type="checkbox"
                     className='w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'
                     value= {value}
+                    readOnly
                     checked = {responses.answers[group].includes(value)}
                 />
                 <span className="ml-2 dark:text-gray-300">{value}</span>
@@ -123,22 +98,33 @@ const ReviewModal = () => {
 
 
             {isOpen && (
-                <div className="fixed inset-0 flex overflow-auto top-0 right-0 left-0 z-50 pt-20 justify-center items-center md:inset-0 h-[calc(100%-5rem)] max-h-full">
-                    <div className='flex flex-col relative p-4 w-full max-w-2xl max-h-full items-center'> 
-                        <div className='h-full relative bg-white rounded-lg shadow-sm dark:bg-gray-700'>
-                            <div class="flex items-center justify-between pt-2 pb-4 md:p-5 border-b rounded-t dark:border-gray-600 border-gray-200">
-                                <button 
-                                    type="button" 
-                                    className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" 
-                                    onClick={() => setIsOpen(!isOpen)}
-                                >
-                                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                                        </svg>
-                                        <span class="sr-only">Close modal</span>
-                                </button>
+                <div className="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-md z-50 transition-opacity duration-300 animate-fadeIn">
+                    <div className='relative px-4 w-full max-w-2xl max-h-[80vh] overflow-auto bg-white dark:bg-gray-800 rounded-lg shadow-sm   [&::-webkit-scrollbar]:w-2
+                                    [&::-webkit-scrollbar-track]:rounded-full
+                                    [&::-webkit-scrollbar-track]:bg-gray-100
+                                    [&::-webkit-scrollbar-thumb]:rounded-full
+                                    [&::-webkit-scrollbar-thumb]:bg-gray-300
+                                    dark:[&::-webkit-scrollbar-track]:bg-neutral-700
+                                    dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500'> 
+                        <div className='h-full relative bg-white rounded-lg shadow-sm dark:bg-gray-800 space-y-2'>
+                            <div className="sticky top-0 bg-white dark:bg-gray-800 z-10 shadow-md border-b border-gray-200 dark:border-gray-600 p-4">
+                                <div className="flex items-center justify-between">
+                                    <h3 class="text-xl font-bold text-gray-900 dark:text-white">
+                                        Detail review of your reponses
+                                    </h3>
+                                    <button 
+                                        type="button" 
+                                        className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" 
+                                        onClick={() => setIsOpen(!isOpen)}
+                                    >
+                                            <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                                            </svg>
+                                            <span className="sr-only">Close modal</span>
+                                    </button>
+                                </div>
                             </div>
-                            <form className="mx-auto space-y-5">
+                            <form className="mx-auto space-y-10">
                                 <div className="mb-5 bg-purple-100 shadow-lg dark:bg-gray-700 py-10 px-5 rounded-lg">
                                     <label className="block mb-2 text-lg font-medium text-gray-900 dark:text-white space-y-2">
                                         <span>What is your English proficiency level?</span>
@@ -198,9 +184,9 @@ const ReviewModal = () => {
                                         <input
                                             type="text"
                                             className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-                                            value={responses.programmingLanguages}
+                                            value={responses.answers.programmingLanguages}
                                             placeholder='e.g., Python, Java'
-                                            required
+                                            readOnly
                                         />
                                     </label>
                                 </div>
@@ -286,10 +272,10 @@ const ReviewModal = () => {
                                     </label>
                                 </div>
                             </form>
-                            <div class="flex items-center justify-center p-2 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+                            <div className="flex items-center justify-center p-2 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
                                 <button
                                     type="button" 
-                                    class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                                    className="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
                                     onClick={() => setIsOpen(!isOpen)}
                                 >
                                     Cancel

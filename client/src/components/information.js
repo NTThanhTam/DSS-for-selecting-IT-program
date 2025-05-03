@@ -2,7 +2,7 @@ import { useLocation } from 'react-router-dom';
 import { react, useEffect, useState } from 'react';
 import NavBar from './navbar.js'
 import {FacultyPieChart,
-    FacultyBarChart, MarketBarChart} from './visualization.js'
+    FacultyBarChart, MarketBarChart, ITWorkforceBarChart} from './visualization.js'
 
 const CollapseMajor = ({majorName, objectives, career}) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -163,9 +163,9 @@ const Information = () => {
                 </div>
             )}
             {checkedValue === 'market-insight' && (
-                <div className='dark:bg-gray-800 p-20 space-y-20'>
-                    {/* <MarketPieChart /> */}
-                    <MarketBarChart />
+                <div className='dark:bg-gray-800 p-10 space-y-20'>
+                    {/* <MarketBarChart /> */}
+                    <ITWorkforceBarChart />
                 </div>
             )}
         </div>

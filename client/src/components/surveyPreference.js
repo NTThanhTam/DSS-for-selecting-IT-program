@@ -172,7 +172,8 @@ export default function SurveyPreference() {
             .then(res => {
                 console.log( res.data.result.insertId)
                     navigate("/result", {state: {
-                        id: res.data.result.insertId}})
+                        id: res.data.result.insertId,
+                        responses: responses}})
                     // navigate("/result", {state: {
                     //     performace_score: res.data.performance_score.performance_score,
                     //     normalized: res.data.normalized.normalizedMatrix,

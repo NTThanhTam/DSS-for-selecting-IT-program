@@ -36,15 +36,13 @@ const User = () => {
 
     useEffect(() => {
         const fetchUsers = async () => {
-            try {
-                const res = await fetch("http://localhost:5000/api/auth/users")
-                const data = await res.json();
-                setUsers(data.users.filter(u => u.role !== 'admin'));
-            } catch (error) {
-                console.log(error);
-            } finally {
-                setLoadingUsers(false)
-            }
+                try {
+                    const res = await fetch("http://localhost:5000/api/auth/users")
+                    const data = await res.json();
+                    setUsers(data.users.filter(u => u.role !== 'admin'));
+                } catch (error) {
+                    console.log(error);
+                }
         }
         fetchUsers()
     }, [])
