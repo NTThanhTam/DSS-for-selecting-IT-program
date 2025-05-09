@@ -9,7 +9,10 @@ const app = express();
 
 const PORT = process.env.PORT || 5000;
 
-app.use(cors({ origin: 'http://localhost:3000' }));
+app.use(cors({ 
+    origin: ['http://localhost:3000', 'https://dss-for-selecting-it-program-0263d785f8b3.herokuapp.com/'],
+    credentials: true
+ }));
 // make this location origin, send request
 
 
@@ -23,6 +26,9 @@ connectToDatabase()
     })
 
 app.use(express.json());
+app.get("/", (req, res) => {
+    res.send("Backend is running");
+  });  
 app.use("/api/app", appRoute); //http://localhost:5000/api/app
 app.use("/api/auth", authRouter); 
 
