@@ -6,7 +6,7 @@ import {saveResult, getCriteriaThreshold
 const getProgramsData  = async () => {
     try {
         const programs = await fetchPrograms(); 
-        return programs[0]; 
+        return programs; 
     } catch (error) {
         console.error("Error in getProgramsData():", error);
     }
@@ -15,7 +15,7 @@ const getProgramsData  = async () => {
 const getCriteriasData  = async () => {
     try {
         const criteria = await fetchCriteria(); 
-        return criteria[0]; 
+        return criteria; 
     } catch (error) {
         console.error("Error in getCriteriasData():", error);
     }
@@ -24,7 +24,7 @@ const getCriteriasData  = async () => {
 const fetchCriteriaThreshold = async (criteria_id) =>{
     try {
         const threshold = await getCriteriaThreshold(criteria_id)
-        return threshold[0]; 
+        return threshold; 
     } catch (error) {
         console.error("Error in fetchCriteriaThreshold():", error);
         throw new Error("Error occurred while fetching criteria");
@@ -57,7 +57,7 @@ const matrixConvert = (rows, type) => {
 
 
 const programs = await getProgramsData()
-const criteria = await getCriteriasData()
+// const criteria = await getCriteriasData()
 
 const english_InfluenceMatrix = matrixConvert(await fetchCriteriaThreshold(4), 1)
 
@@ -228,24 +228,22 @@ export async function surveyCalculate(answerSet) {
     const bestSimilarity = topsis.idealSolution(weightedMatrix);
     const ranks = topsis.rank(bestSimilarity);
 
-    console.log({performance_score})
-    console.log({normalizedMatrix})
-    console.log({weightedMatrix})
-    console.log({bestSimilarity})
+    // console.log({performance_score})
+    // console.log({normalizedMatrix})
+    // console.log({weightedMatrix})
+    // console.log({bestSimilarity})
     console.log({ranks})
 
     const rank_first = programs[ranks.indexOf(1)];  
     const rank_second = programs[ranks.indexOf(2)]; 
     const rank_third = programs[ranks.indexOf(3)];  
-    let result = null
+    let result_id = null
     try {
         const user_id = answerSet.user_id
-        result  = await saveResult(user_id, rank_first.program_code, rank_second.program_code, rank_third.program_code); 
+        result_id  = await saveResult(user_id, rank_first.program_code, rank_second.program_code, rank_third.program_code); 
     } catch (error) {
         console.error("Error in preferenceCalculate():", error);
     }
-
-    // console.log({'HEREEEE: ': result})
-    return {result}
+    return result_id
     // return {performance_score, normalizedMatrix, weightedMatrix, bestSimilarity, ranks};
 }

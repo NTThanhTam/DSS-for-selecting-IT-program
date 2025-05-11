@@ -37,7 +37,7 @@ const User = () => {
     useEffect(() => {
         const fetchUsers = async () => {
                 try {
-                    const res = await fetch("http://localhost:5000/api/auth/users")
+                    const res = await fetch("http://localhost:1433/api/auth/users")
                     const data = await res.json();
                     setUsers(data.users.filter(u => u.role !== 'admin'));
                 } catch (error) {
@@ -51,7 +51,7 @@ const User = () => {
     const handleDelete = async (id) => {
         console.log(id + ' is deleted')
         try {
-            await axios.delete(`http://localhost:5000/api/app/users/delete/` + id);
+            await axios.delete(`http://localhost:1433/api/app/users/delete/` + id);
             setUsers((prevUsers) => prevUsers.filter((user) => user.user_id !== id));
             } catch (error) {
             console.error("Error deleting user:", error);

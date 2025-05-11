@@ -1,7 +1,4 @@
-import {findAllQuestions,
-        findQuestion,
-        findAllOptions,
-        findOption,
+import {
         getPrograms,
         getCriteria,
         findAllUsers,
@@ -12,51 +9,6 @@ import {findAllQuestions,
         deleteAUser,
         updateAProgram
 } from "../DB/queries.js";
-
-export const getAllQuestions = async (req, res) => { 
-    try {
-        const questions = await findAllQuestions();
-        return res.status(200).json({questions})
-    } catch (error) {
-        console.log(error)
-        res.status(500).json({message: "Error occured"})
-    }    
-    };
-
-export const getQuestion = async (req, res) => { 
-    try {
-        const question_id = req.params.id;
-        const question = await findQuestion(question_id);
-        return res.status(200).json({question})
-    } catch (error) {
-        console.log(error)
-        res.status(500).json({message: "Error occured"})
-    }    
-    };
-
-export const getAllOptions = async (req, res) => { 
-    try {
-        const question_id = req.params.id;
-        const options = await findAllOptions(question_id);
-        return res.status(200).json({options})
-    } catch (error) {
-        console.log(error)
-        res.status(500).json({message: "Error occured"})
-    }    
-    };
-
-export const getOption = async (req, res) => {
-    try {
-        const option_id = req.params.id;
-        const option = await findOption(option_id);
-        return res.status(200).json({option})
-    } catch (error) {
-        console.log(error)
-        res.status(500).json({message: "Error occured"})
-    }
-}
-
-
 
 export const getAllPrograms = async (req, res) => { 
     try {

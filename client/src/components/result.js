@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom'
 import { ReviewModal } from './modal';
 import axios from 'axios'
+import LoadingPage from "../pages/loadingPage.js";
 
 const Result = () => {
     const location = useLocation()      
@@ -18,9 +19,9 @@ const Result = () => {
     useEffect(() => {
         const fetchPrograms = async () => {
             try {
-                const res = await fetch("http://localhost:5000/api/app/program")
-                const data = await res.json();
-                setPrograms(data.programs[0]);
+                const res = await axios.get("http://localhost:1433/api/app/program")
+                const data = await res.data;
+                setPrograms(data.programs);
             } catch (error) {
                 console.log(error);
             } finally {
@@ -29,8 +30,8 @@ const Result = () => {
         }
         const fetchResult = async () => {
             try {
-                const res = await axios.get("http://localhost:5000/api/app/result/" + id)
-                setResult(res.data.result[0]);
+                const res = await axios.get("http://localhost:1433/api/app/result/" + id)
+                setResult(res.data.result);
             } catch (error) {
                 console.log(error);
             } finally {
@@ -47,7 +48,7 @@ const Result = () => {
         e.preventDefault();
     
         try {
-            await axios.put("http://localhost:5000/api/app/result/" + result.result_id, { feedback: newFeedback })
+            await axios.put("http://localhost:1433/api/app/result/" + result.result_id, { feedback: newFeedback })
                 .then(res => {
                     console.log("Feedback updated successfully:", res.data);
                 })
@@ -62,7 +63,7 @@ const Result = () => {
     const resultProgram = programs.find(p => p.program_code === result.rank_first)
     if (loadingPrograms || loadingResult) {
         return (
-            <div>Loading...</div>
+            <LoadingPage />
         )
     }
 

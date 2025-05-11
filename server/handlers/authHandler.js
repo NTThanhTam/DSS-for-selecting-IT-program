@@ -9,11 +9,11 @@ export const login = async (req, res) => {
         const username = req.body.username;
         const password = req.body.password;
         const user = await getUserByUsername(username);
-        console.log(user[0])
-        if (user[0].length > 0){
-            const user_id = user[0][0].user_id;
-            const user_role = user[0][0].role;
-            if (password == user[0][0].password) {
+        console.log(user)
+        if (user.length > 0){
+            const user_id = user[0].user_id;
+            const user_role = user[0].role;
+            if (password == user[0].password) {
                 const accessToken = jwt.sign({id: user_id, role: user_role}, process.env.ACCESS_TOKEN_SECRET, { expiresIn: 86400 })
                 return res.status(200).send({ auth: true, accessToken, Status: "Success", user_id, user_role });
             } else {

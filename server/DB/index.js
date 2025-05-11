@@ -1,5 +1,6 @@
 import { createPool } from "mysql2/promise"
-import {config} from "dotenv"
+import { config } from "dotenv"
+import sql from "mssql"
 
 config()
 
@@ -10,6 +11,17 @@ const pool = createPool({
     host: process.env.MYSQL_HOST,
     database: process.env.MYSQL_DATABASE,
 })
+
+const azureConfig = {
+    user: process.env.AZURE_USER,
+    password: process.env.AZURE_PASSWORD,
+    server: process.env.AZURE_SERVER,
+    database: process.env.AZURE_DATABASE,
+    options: {
+        encrypt: true,
+        trustServerCertificate: false
+    }
+}
 
 const connectToDatabase = async () => {
     try {
@@ -23,5 +35,19 @@ const connectToDatabase = async () => {
 };
 
 
+const connectToAzureDatabase = async () => {
+    try {
+        var poolConnection = await sql.connect(azureConfig)
+        console.log("✅ Connected to Azure SQL Database");
+        console.log("Destroying connection...");
+        await poolConnection.close();
 
-export {connectToDatabase, pool}
+    } catch (error) {
+        console.error("❌ Azure SQL connection error:", error);
+        throw error;
+    }
+}
+
+
+
+export { connectToDatabase, connectToAzureDatabase, pool, azureConfig }
