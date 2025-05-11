@@ -9,7 +9,7 @@ import sql from "mssql"
 const app = express();
 
 const PORT = process.env.PORT || 5000;
-const AZURE_PORT = process.env.AZURE_PORT || 5000;
+const AZURE_PORT = process.env.AZURE_PORT;
 
 app.use(cors({
     origin: ['http://localhost:3000'],
