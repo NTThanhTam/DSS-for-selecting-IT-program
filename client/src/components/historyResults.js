@@ -11,7 +11,7 @@ const HistoryResults = () => {
     useEffect(() => {
         const fetchResult = async () => {
             try {
-                const res = await axios.get("http://localhost:1433/api/app/results/" + user.user_id)
+                const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/app/results/` + user.user_id)
                 setResults(res.data.results)
                 setLoading(false)
             } catch (err) {
@@ -29,7 +29,7 @@ const HistoryResults = () => {
         console.log(id)
         setDeleting(id)
         try {
-            await axios.delete("http://localhost:1433/api/app/results/delete/" + id)
+            await axios.delete(`${process.env.REACT_APP_API_URL}/api/app/results/delete/` + id)
             setResults(results.filter(result => result.result_id !== id));
             setDeleting(null)
         } catch (err) {

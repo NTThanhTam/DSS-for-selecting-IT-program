@@ -11,7 +11,7 @@ const Users = () => {
 
         const getUsers = async () => {
             try {
-                const response = await axios.get("http://localhost:1433/api/app/users", {
+                const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/app/users`, {
                     signal: controller.signal
                 })
                 console.log(response.data)

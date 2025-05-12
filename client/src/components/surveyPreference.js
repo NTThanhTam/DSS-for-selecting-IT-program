@@ -168,7 +168,7 @@ export default function SurveyPreference() {
         e.preventDefault();
         setLoading(true)
         try {
-            await axios.post("http://localhost:1433/api/app/result/preferences", responses)
+            await axios.post(`${process.env.REACT_APP_API_URL}/api/app/result/preferences`, responses)
                 .then(res => {
                     console.log(res)
                     navigate("/result", {

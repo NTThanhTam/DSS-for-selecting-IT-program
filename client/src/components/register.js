@@ -26,7 +26,7 @@ const Register = () => {
     useEffect(() => {
         const fetchUsers = async () => {
             try {
-                const res = await axios.get("http://localhost:1433/api/auth/users")
+                const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/auth/users`)
                 const data = await res.data;
                 console.log(data)
                 setUsers(data.users);

@@ -1,6 +1,7 @@
 import React from "react";
 import { useEffect, useState } from 'react';
 import axios from 'axios'
+import LoadingPage from "../../pages/loadingPage.js";
 
 function ProgramCard({ program, onUpdate }) {
     const [isEditing, setIsEditing] = useState(false)
@@ -175,9 +176,10 @@ const Program = () => {
     useEffect(() => {
       const fetchUsers = async () => {
           try {
-              const res = await fetch("http://localhost:5000/api/app/program")
-              const data = await res.json();
-              setPrograms(data.programs[0]);
+              const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/app/program`)
+              const data = await res.data;
+              console.log(data)
+              setPrograms(data.programs);
           } catch (error) {
               console.log(error);
           } finally {
@@ -191,7 +193,7 @@ const Program = () => {
 
     const handleUpdate = async (program_id, updateData) => {
         try {
-            await axios.put(`http://localhost:5000/api/app/program/` + program_id, updateData);
+            await axios.put(`${process.env.REACT_APP_API_URL}/api/app/program/` + program_id, updateData);
             } catch (error) {
             console.error("Error updating user:", error);
         }
@@ -206,7 +208,7 @@ const Program = () => {
 
     if(loadingPrograms) {
         return(
-            <div>Loading...</div>
+            <LoadingPage />
         )
     }
 

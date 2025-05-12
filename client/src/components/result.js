@@ -19,7 +19,7 @@ const Result = () => {
     useEffect(() => {
         const fetchPrograms = async () => {
             try {
-                const res = await axios.get("http://localhost:1433/api/app/program")
+                const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/app/program`)
                 const data = await res.data;
                 setPrograms(data.programs);
             } catch (error) {
@@ -30,7 +30,7 @@ const Result = () => {
         }
         const fetchResult = async () => {
             try {
-                const res = await axios.get("http://localhost:1433/api/app/result/" + id)
+                const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/app/result/` + id)
                 setResult(res.data.result);
             } catch (error) {
                 console.log(error);
@@ -48,7 +48,7 @@ const Result = () => {
         e.preventDefault();
     
         try {
-            await axios.put("http://localhost:1433/api/app/result/" + result.result_id, { feedback: newFeedback })
+            await axios.put(`${process.env.REACT_APP_API_URL}/api/app/result/` + result.result_id, { feedback: newFeedback })
                 .then(res => {
                     console.log("Feedback updated successfully:", res.data);
                 })

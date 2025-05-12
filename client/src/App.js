@@ -23,14 +23,6 @@ import {
 export const clientURL = `http://localhost:3000`;
 
 const App = () => {
-  // const [loading, setLoading] = useState(true)
-
-  // useEffect(() => {
-  //     setTimeout(() => setLoading(false), 1000)
-  // }, [])
-  // if (loading) {
-  //     return <LoadingPage />   
-  // }
 
   return (
     <div  className="flex flex-col min-h-screen">

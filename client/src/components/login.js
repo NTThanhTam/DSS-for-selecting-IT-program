@@ -13,12 +13,12 @@ const Login = () => {
     const [loading, setLoading] = useState(false); // Loading state
 
     const navigate = useNavigate()
-
+    console.log(process.env.REACT_APP_API_URL)
     const handleSubmit = (e) => {
         e.preventDefault()
         if (user.username !== "" && user.password !== "") {
             setLoading(true);
-            axios.post("http://localhost:1433/api/auth/login", user)
+            axios.post(`${process.env.REACT_APP_API_URL}/api/auth/login`, user)
                 .then(res => {
                     const data = res?.data
                     sessionStorage.setItem('user', JSON.stringify(data))

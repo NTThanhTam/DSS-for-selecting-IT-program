@@ -1,6 +1,7 @@
 import React from "react";
 import { useEffect, useState } from 'react';
 import axios from 'axios'
+import LoadingPage from "../../pages/loadingPage.js";
 
 function UserCard({ user, onDelete }) {
     return(
@@ -37,9 +38,11 @@ const User = () => {
     useEffect(() => {
         const fetchUsers = async () => {
                 try {
-                    const res = await fetch("http://localhost:1433/api/auth/users")
-                    const data = await res.json();
+                    const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/auth/users`)
+                    const data = await res.data;
                     setUsers(data.users.filter(u => u.role !== 'admin'));
+                    setLoadingUsers(false)
+
                 } catch (error) {
                     console.log(error);
                 }
@@ -51,7 +54,7 @@ const User = () => {
     const handleDelete = async (id) => {
         console.log(id + ' is deleted')
         try {
-            await axios.delete(`http://localhost:1433/api/app/users/delete/` + id);
+            await axios.delete(`${process.env.REACT_APP_API_URL}/api/app/users/delete/` + id);
             setUsers((prevUsers) => prevUsers.filter((user) => user.user_id !== id));
             } catch (error) {
             console.error("Error deleting user:", error);
@@ -60,7 +63,7 @@ const User = () => {
 
     if(loadingUsers) {
         return(
-            <div>Loading...</div>
+            <LoadingPage />
         )
     } else{
         // console.log(users)
