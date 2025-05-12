@@ -72,7 +72,7 @@ const Register = () => {
 
         if (!messages.username && !messages.password && !messages.confirmPassword) {
             setRegistering(true);
-            axios.post("http://localhost:1433/api/auth/register", user)
+            axios.post(`${process.env.REACT_APP_API_URL}/api/auth/register`, user)
                 .then(res => {
                     const data = res?.data
                     console.log(data)
