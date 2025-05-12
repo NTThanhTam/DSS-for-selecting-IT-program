@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 5000;
 const AZURE_PORT = process.env.AZURE_PORT;
 
 app.use(cors({
-    origin: ['http://localhost:3000'],
+    origin: ['http://localhost:3000', 'https://fe-dss-for-selecting-it-program.onrender.com'],
     credentials: true
 }));
 // make this location origin, send request
