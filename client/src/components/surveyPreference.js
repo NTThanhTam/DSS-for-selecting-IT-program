@@ -71,6 +71,7 @@ export default function SurveyPreference() {
     const [loading, setLoading] = useState(false)
     const [responses, setResponses] = useState({
         user_id: user.user_id,
+        studentId: '',
         answers: {
             programming: 'not interested',
             dataAnalysis: 'not interested',
@@ -98,6 +99,13 @@ export default function SurveyPreference() {
             }
         }));
     };
+
+    const handleChangeStudentId = (value) => {
+        setResponses((prevResponses) => ({
+            ...prevResponses,
+            studentId: value
+        }));
+    }
 
     const handleChangeText = (question, value) => {
         setResponses((prevResponses) => ({
@@ -177,12 +185,6 @@ export default function SurveyPreference() {
                             responses: responses
                         }
                     })
-                    // navigate("/result", {state: {
-                    //     performace_score: res.data.performance_score.performance_score,
-                    //     normalized: res.data.normalized.normalizedMatrix,
-                    //     weighted: res.data.weighted.weightedMatrix,
-                    //     bestSimilarity: res.data.bestSimilarity.bestSimilarity,
-                    //     ranks: res.data.ranks.ranks}})
                 })
                 .then(err => console.log(err))
                 .finally(() => {
@@ -208,15 +210,28 @@ export default function SurveyPreference() {
         )
     }
 
-
-
-    // console.log({english: responses.answers.englishProficiency})
-
     return (
         <div className='flex flex-col mx-auto '>
             <div className='h-full py-5'>
 
                 <form className="max-w-2xl mx-auto space-y-20" onSubmit={handleSubmit}>
+                    <div className="mb-5 bg-purple-100 shadow-lg dark:bg-gray-700 py-10 px-5 rounded-lg">
+
+                        <label className="block mb-2 text-lg font-medium text-gray-900 dark:text-white space-y-2">
+                            <span>Student ID: <span className='dark:text-gray-500'>(required)</span></span>
+                            <input
+                                type="text"
+                                className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                                value={responses.studentId}
+                                onChange={(e) => handleChangeStudentId(e.target.value)}
+                                pattern="^IT.{9}$"
+                                title="ID must start with 'IT' followed by 9 letters/digits"
+                                placeholder='e.g ITITIU20302'
+                                required
+                            />
+                        </label>
+                    </div>
+
                     <div className="mb-5 bg-purple-100 shadow-lg dark:bg-gray-700 py-10 px-5 rounded-lg">
                         <label className="block mb-2 text-lg font-medium text-gray-900 dark:text-white space-y-2">
                             <span>What is your English proficiency level?</span>

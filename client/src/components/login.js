@@ -2,6 +2,7 @@ import React from 'react'
 import axios from 'axios'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import DisabledPage from '../pages/disabledPage.js'
 
 const Login = () => {
     const [user, setUser] = useState({
@@ -11,6 +12,7 @@ const Login = () => {
 
     const [message, setMessage] = useState('');
     const [loading, setLoading] = useState(false); // Loading state
+    const isDisabled = true; 
 
     const navigate = useNavigate()
     console.log(process.env.REACT_APP_API_URL)
@@ -40,6 +42,11 @@ const Login = () => {
         } else {
             setMessage("Please provide a valid input");
         }
+    }
+    if(isDisabled) {
+        return (
+            <DisabledPage />
+        )
     }
 
     return (

@@ -80,19 +80,21 @@ export const findAllUsers = async () => {
 
 }
 
-export const saveResult = async (user_id, rank_first, rank_second, rank_third) => {
-    const QUERY = `INSERT INTO Result (user_id, rank_first, rank_second, rank_third) 
+export const saveResult = async (user_id, studentId, rank_first, rank_second, rank_third) => {
+    const QUERY = `INSERT INTO Result (user_id, studentId, rank_first, rank_second, rank_third) 
                     OUTPUT INSERTED.result_id
-                    VALUES (@user_id, @rank_first, @rank_second, @rank_third)`;
+                    VALUES (@user_id, @studentId, @rank_first, @rank_second, @rank_third)`;
     try {
         const client = await sql.connect(azureConfig);
         const result = await client.request()
-                                    .input('user_id', sql.Int, user_id)     
+                                    .input('user_id', sql.Int, user_id)
+                                    .input('studentId', sql.VarChar, studentId)     
                                     .input('rank_first', sql.VarChar, rank_first)     
                                     .input('rank_second', sql.VarChar, rank_second)     
                                     .input('rank_third', sql.VarChar, rank_third)     
                                     .query(QUERY);
         await sql.close()
+        console.log({'id': result.recordsett});
         return result.recordset;
     } catch (error) {
         console.log("Error in saveResult(): ");

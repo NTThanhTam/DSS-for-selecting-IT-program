@@ -19,6 +19,10 @@ appRouter.post("/result/preferences", async (req, res) => {
         try {
                 const answers = req.body;
                 const result_id = await surveyCalculate(answers)
+                console.log(result_id)
+                if (result_id === undefined) {
+                        return res.status(400).json({ message: "Error in calculation" });
+                }
                 return res.status(201).json(result_id)
 
         } catch (error) {

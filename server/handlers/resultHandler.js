@@ -1,30 +1,31 @@
 import Topsis from './topsis.js';
-import {fetchPrograms, fetchCriteria} from './index.js';
-import {saveResult, getCriteriaThreshold
+import { fetchPrograms, fetchCriteria } from './index.js';
+import {
+    saveResult, getCriteriaThreshold
 } from "../DB/queries.js";
 
-const getProgramsData  = async () => {
+const getProgramsData = async () => {
     try {
-        const programs = await fetchPrograms(); 
-        return programs; 
+        const programs = await fetchPrograms();
+        return programs;
     } catch (error) {
         console.error("Error in getProgramsData():", error);
     }
 }
 
-const getCriteriasData  = async () => {
+const getCriteriasData = async () => {
     try {
-        const criteria = await fetchCriteria(); 
-        return criteria; 
+        const criteria = await fetchCriteria();
+        return criteria;
     } catch (error) {
         console.error("Error in getCriteriasData():", error);
     }
 }
 
-const fetchCriteriaThreshold = async (criteria_id) =>{
+const fetchCriteriaThreshold = async (criteria_id) => {
     try {
         const threshold = await getCriteriaThreshold(criteria_id)
-        return threshold; 
+        return threshold;
     } catch (error) {
         console.error("Error in fetchCriteriaThreshold():", error);
         throw new Error("Error occurred while fetching criteria");
@@ -32,7 +33,7 @@ const fetchCriteriaThreshold = async (criteria_id) =>{
 }
 
 const matrixConvert = (rows, type) => {
-    if(type === 1){
+    if (type === 1) {
         return rows.reduce((matrix, row) => {
             if (!matrix[row.attribute_name]) {
                 matrix[row.attribute_name] = {};
@@ -84,17 +85,17 @@ export async function surveyCalculate(answerSet) {
     // console.log({softSkills})
     // console.log({interestedSubjects})
 
-    for (var key in answers){
+    for (var key in answers) {
         const value = answers[key];
-        if (value === 'interested'){
+        if (value === 'interested') {
             interested.push(key)
             continue
         }
-        else if (value === 'quite interested'){
+        else if (value === 'quite interested') {
             quiteInterested.push(key)
             continue
         }
-        else{
+        else {
             notInterested.push(key)
         }
     }
@@ -120,18 +121,18 @@ export async function surveyCalculate(answerSet) {
     softSkills.forEach(skill => {
         const influence = softSkill_InfluenceMatrix[skill];
         if (influence) {
-          C5_softSkills[0] += influence.IT;
-          C5_softSkills[1] += influence.CS;
-          C5_softSkills[2] += influence.DS;
+            C5_softSkills[0] += influence.IT;
+            C5_softSkills[1] += influence.CS;
+            C5_softSkills[2] += influence.DS;
         }
-      });
+    });
 
     const suitabilityScores = { IT: 0, CS: 0, DS: 0 };
 
     interestedSubjects.forEach(subject => {
         const { subject: subjectName, gpa } = subject;
         const thresholds = gpa_InfluenceMatrix[subjectName];
-        for (let field in thresholds){
+        for (let field in thresholds) {
             if (parseFloat(gpa) >= thresholds[field]) {
                 suitabilityScores[field] += 1; // Increment score for meeting the threshold
             }
@@ -175,7 +176,7 @@ export async function surveyCalculate(answerSet) {
                 }
             }
         }
-        
+
     }
     // console.log({'C1_interested': C1_interested})
     // console.log({'C2_quiteInterested': C2_quiteInterested})
@@ -228,22 +229,18 @@ export async function surveyCalculate(answerSet) {
     const bestSimilarity = topsis.idealSolution(weightedMatrix);
     const ranks = topsis.rank(bestSimilarity);
 
-    // console.log({performance_score})
-    // console.log({normalizedMatrix})
-    // console.log({weightedMatrix})
-    // console.log({bestSimilarity})
-    console.log({ranks})
+    console.log({ ranks })
+    console.log( answerSet )
 
-    const rank_first = programs[ranks.indexOf(1)];  
-    const rank_second = programs[ranks.indexOf(2)]; 
-    const rank_third = programs[ranks.indexOf(3)];  
+    const rank_first = programs[ranks.indexOf(1)];
+    const rank_second = programs[ranks.indexOf(2)];
+    const rank_third = programs[ranks.indexOf(3)];
     let result_id = null
     try {
         const user_id = answerSet.user_id
-        result_id  = await saveResult(user_id, rank_first.program_code, rank_second.program_code, rank_third.program_code); 
+        result_id = await saveResult(user_id, answerSet.studentId, rank_first.program_code, rank_second.program_code, rank_third.program_code);
     } catch (error) {
         console.error("Error in preferenceCalculate():", error);
     }
     return result_id
-    // return {performance_score, normalizedMatrix, weightedMatrix, bestSimilarity, ranks};
 }
